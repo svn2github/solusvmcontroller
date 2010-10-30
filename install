@@ -1,0 +1,2 @@
+1. Upload all files under this directory into your web server.
+2. Change the permission of /configuration.php and /tables to 777 using chmod.
