@@ -51,7 +51,7 @@ switch($step){
 			echo '<p class="red">Creating user table ' . str_repeat('.', 10) . ' [fail]</p>';
 		}
 
-		if(@file_put_contents(TABLES . $randomCode . 'vps.tab', 'vps_id;vps_name;description;key;hash;host;port;date_added' . "\n")){
+		if(@file_put_contents(TABLES . $randomCode . 'vps.tab', 'vps_id;vps_name;description;key;hash;protocol;host;port;date_added' . "\n")){
 			echo '<p class="green">Creating vps table ' . str_repeat('.', 10) . ' [pass]</p>';
 		}
 		else{
