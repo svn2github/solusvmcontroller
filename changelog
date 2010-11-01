@@ -1,13 +1,16 @@
-v1.2 (1 Nov, 2010)
+v1.2 (01 Nov, 2010)
 - Updated CSS to make forms look more visible.
 - Fixed security issue with cross-side scripting.
 - Added handler to prevent invalid input for protocol field.
+- Added cURL and socket supports when querying SolusVM API.
 - Minor changes on layout.
+
 
 v1.1 (31 Oct, 2010)
 - A small bug in the code was fixed. The inital code only worked with SVM hosts that used https connections.
   This is now fixed and aditional fields were added to input the protocol.
   This was fixed by Gayan.
+
 
 v1.0 (30 Oct, 2010)
 - First public release

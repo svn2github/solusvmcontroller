@@ -101,9 +101,20 @@ final class SolusVM{
 			return;
 		}
 
-		$ctx = stream_context_create(array('http'=>array('timeout'=>5)));
+		$url = $this->protocol . '://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action;
 
-		$data = file_get_contents($this->protocol . '://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action, 0, $ctx);
+		if(function_exists('curl_init')){
+			$data = $this->curlGet($url);
+		}
+		elseif(function_exists('fsockopen')){
+			$data = $this->socketGet($url);
+		}
+		elseif(@ini_get('allow_url_fopen')){
+			$data = $this->fileGet($url);
+		}
+		else{
+			return;
+		}
 
 		if(preg_match_all('/<(.*?)>([^<]+)<\/\\1>/i', $data, $matches)){
 			$result = array();
@@ -114,6 +125,51 @@ final class SolusVM{
 			return $result;
 		}
 		return;
+	}
+
+	private function fileGet($url){
+		$ctx = stream_context_create(array('http'=>array('timeout'=>5)));
+		return @file_get_contents($url, 0, $ctx);
+	}
+
+	private function socketGet($url){
+		$url = parse_url($url);
+		$port = 80;
+
+		if($url['scheme'] == 'https'){
+			$url['host'] = 'ssl://' . $url['host'];
+			$port = 443;
+		}
+
+		if(isset($url['port'])) $port = $url['port'];
+
+		$conn = fsockopen ($url['host'], $port, $errorNo, $errorStr, 5);
+		if($conn){
+			$buffer = '';
+
+			fputs($conn, 'GET ' . $url['path'] . '?' . $url['query'] . ' HTTP/1.1' . "\r\n" . 'Host: ' . str_replace('ssl://', '', $url['host']) . "\r\n\r\n");
+
+			while(!feof($conn)) $buffer .= fgets($conn, 1024);
+
+			fclose($conn);
+
+			return $buffer;
+		}
+		return;
+	}
+
+	private function curlGet($url){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		$data = curl_exec($ch);
+		curl_close($ch);
+
+		return $data;
 	}
 }
 ?>
