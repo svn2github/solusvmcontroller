@@ -296,6 +296,14 @@ switch($action){
 			$port = isset($_POST['port']) ? $_POST['port'] : $result[0]['port'];
 			$description = isset($_POST['description']) ? $_POST['description'] : str_replace(array('\n', '<semicolon>'), array("\n", ';'), $result[0]['description']);
 
+			$protocols = array('http'=>'http://', 'https'=>'https://');
+
+			$protocolOptions = '<select name="protocol" id="protocol">';
+			foreach($protocols as $optionKey=>$optionValue){
+				$protocolOptions .= '<option value="' . $optionKey . '"' . ($optionKey==$protocol ? ' selected' : '') . '> ' . $optionValue . '</option>';
+			}
+			$protocolOptions .= '</select>';
+
 			if(isset($_POST['name'])){
 				if(empty($name)){
 					$status .= '<p class="red">VPS name cannot be blank.</p>';
@@ -312,14 +320,6 @@ switch($action){
 				if(!empty($port) && !preg_match('/[0-9]+/', $port)){
 					$status .= '<p class="red">"' . $port . '" is not a valid port.</p>';
 				}
-
-				$protocols = array('http'=>'http://', 'https'=>'https://');
-
-				$protocolOptions = '<select name="protocol" id="protocol">';
-				foreach($protocols as $optionKey=>$optionValue){
-					$protocolOptions .= '<option value="' . $optionKey . '"' . ($optionKey==$protocol ? ' selected' : '') . '> ' . $optionValue . '</option>';
-				}
-				$protocolOptions .= '</select>';
 
 				if(empty($status)){
 					$vps->update($id, array('vps_name'=>$name, 'key'=>$key, 'hash'=>$hash, 'protocol'=>$protocol, 'host'=>$host, 'port'=>$port, 'description'=>str_replace(array("\n", ';'), array('\n', '<semicolon>'), $description)));

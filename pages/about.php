@@ -24,7 +24,7 @@ defined('INDEX') or die('Access is denied.');
 $title = 'About';
 include(INCLUDES . 'header.php');
 ?>
-<h1>SolusVMController v1.0</h1>
+<h1>SolusVMController v1.2</h1>
 <p>
 	SolusVMController is free web based application to control all your SolusVM based VPSes under one interface. This application access your VPS using API provided by <a href="http://solusvm.com" target="_blank">Soluslabs</a>.
 	Please make sure your VPS provider has enabled API access in order to use this application.
