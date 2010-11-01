@@ -22,7 +22,7 @@
 
 // Preset PHP settings
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 if(function_exists('date_default_timezone_set')) date_default_timezone_set('GMT');
 set_time_limit(0);
 

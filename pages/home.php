@@ -37,9 +37,20 @@ switch($action){
 		$name = isset($_POST['name']) ? $_POST['name'] : '';
 		$key = isset($_POST['key']) ? $_POST['key'] : '';
 		$hash = isset($_POST['hash']) ? $_POST['hash'] : '';
+		$protocol = isset($_POST['protocol']) ? $_POST['protocol'] : 'http';
+		$protocol = ($protocol == 'https') ? 'https' : 'http';
 		$host = isset($_POST['host']) ? $_POST['host'] : '';
 		$port = isset($_POST['port']) ? $_POST['port'] : '';
 		$description = isset($_POST['description']) ? $_POST['description'] : '';
+
+		$protocols = array('http'=>'http://', 'https'=>'https://');
+
+		$protocolOptions = '<select name="protocol" id="protocol">';
+		foreach($protocols as $optionKey=>$optionValue){
+			$protocolOptions .= '<option value="' . $optionKey . '"' . ($optionKey==$protocol ? ' selected' : '') . '> ' . $optionValue . '</option>';
+		}
+		$protocolOptions .= '</select>';
+
 
 		if(isset($_POST['name'])){
 			if(empty($name)){
@@ -60,7 +71,7 @@ switch($action){
 
 			if(empty($status)){
 				$vps = new csvHandler(TABLES . VPS_TABLE, ';', 'vps_id');
-				$vps->add(array('vps_id'=>$vps->getLastId()+1, 'vps_name'=>$name, 'key'=>$key, 'hash'=>$hash, 'host'=>$host, 'port'=>$port, 'description'=>str_replace(array("\n", ';'), array('\n', '<semicolon>'), $description), 'date_added'=>time()));
+				$vps->add(array('vps_id'=>$vps->getLastId()+1, 'vps_name'=>$name, 'key'=>$key, 'hash'=>$hash, 'protocol'=>$protocol, 'host'=>$host, 'port'=>$port, 'description'=>str_replace(array("\n", ';'), array('\n', '<semicolon>'), $description), 'date_added'=>time()));
 				$_SESSION['status'] = '<p class="green">VPS "' . $name . '" added.</p>';
 				header('Location: ?p=home');
 				exit;
@@ -72,15 +83,15 @@ switch($action){
 		<form action="?action=add" method="post">
 			<p>
 				<label for="name">VPS Name</label>
-				<input type="text" name="name" id="name" value="' . $name . '" size="50" /> <span class="red">*</span>
+				<input type="text" name="name" id="name" value="' . $name . '" size="64" /> <span class="red">*</span>
 				<label for="key">API Key</label>
-				<input type="text" name="key" id="key" value="' . $key . '" size="50" /> <span class="red">*</span>
+				<input type="text" name="key" id="key" value="' . $key . '" size="64" /> <span class="red">*</span>
 				<label for="hash">API Hash</label>
-				<input type="text" name="hash" id="hash" value="' . $hash . '" size="50" /> <span class="red">*</span>
+				<input type="text" name="hash" id="hash" value="' . $hash . '" size="64" /> <span class="red">*</span>
 				<label for="host">Host</label>
-				<input type="text" name="host" id="host" value="' . $host . '" size="50" /> <span class="red">*</span>
+				' . $protocolOptions . ' <input type="text" name="host" id="host" value="' . $host . '" size="50" /> <span class="red">*</span>
 				<label for="port">Port</label>
-				<input type="text" name="port" id="port" value="' . $port . '" size="50" />
+				<input type="text" name="port" id="port" value="' . $port . '" size="10" />
 				<label for="description">Description</label>
 				<textarea name="description" id="description">' . $description . '</textarea>
 			</p>
@@ -100,6 +111,7 @@ switch($action){
 			$solus = new SolusVM;
 			$solus->setKey($result[0]['key']);
 			$solus->setHash($result[0]['hash']);
+			$solus->setProtocol($result[0]['protocol']);
 			$solus->setHost($result[0]['host']);
 			if($result[0]['port']) $solus->setPort($result[0]['port']);
 			$data = $solus->getStatus();
@@ -122,7 +134,7 @@ switch($action){
 					<label>API Hash</label>
 					' . $result[0]['hash'] . '
 					<label>Host</label>
-					' . $result[0]['host']  . ($result[0]['port'] ? ':' . $result[0]['vps_name'] : '') . '
+					' . $result[0]['protocol'] . '://' . $result[0]['host'] . ($result[0]['port'] ? ':' . $result[0]['vps_name'] : '') . '
 					<label>Description</label>
 					' . str_replace(array('\n', '<semicolon>'), array('<br />', ';'), $result[0]['description']) . '
 					<hr />
@@ -163,6 +175,7 @@ switch($action){
 			$solus = new SolusVM;
 			$solus->setKey($result[0]['key']);
 			$solus->setHash($result[0]['hash']);
+			$solus->setProtocol($result[0]['protocol']);
 			$solus->setHost($result[0]['host']);
 			if($result[0]['port']) $solus->setPort($result[0]['port']);
 			$data = $solus->boot();
@@ -201,6 +214,7 @@ switch($action){
 			$solus = new SolusVM;
 			$solus->setKey($result[0]['key']);
 			$solus->setHash($result[0]['hash']);
+			$solus->setProtocol($result[0]['protocol']);
 			$solus->setHost($result[0]['host']);
 			if($result[0]['port']) $solus->setPort($result[0]['port']);
 			$data = $solus->shutdown();
@@ -239,6 +253,7 @@ switch($action){
 			$solus = new SolusVM;
 			$solus->setKey($result[0]['key']);
 			$solus->setHash($result[0]['hash']);
+			$solus->setProtocol($result[0]['protocol']);
 			$solus->setHost($result[0]['host']);
 			if($result[0]['port']) $solus->setPort($result[0]['port']);
 			$data = $solus->reboot();
@@ -275,6 +290,8 @@ switch($action){
 			$name = isset($_POST['name']) ? $_POST['name'] : $result[0]['vps_name'];
 			$key = isset($_POST['key']) ? $_POST['key'] : $result[0]['key'];
 			$hash = isset($_POST['hash']) ? $_POST['hash'] : $result[0]['hash'];
+			$protocol = isset($_POST['protocol']) ? $_POST['protocol'] : 'http';
+			$protocol = ($protocol == 'https') ? 'https' : 'http';
 			$host = isset($_POST['host']) ? $_POST['host'] : $result[0]['host'];
 			$port = isset($_POST['port']) ? $_POST['port'] : $result[0]['port'];
 			$description = isset($_POST['description']) ? $_POST['description'] : str_replace(array('\n', '<semicolon>'), array("\n", ';'), $result[0]['description']);
@@ -296,8 +313,16 @@ switch($action){
 					$status .= '<p class="red">"' . $port . '" is not a valid port.</p>';
 				}
 
+				$protocols = array('http'=>'http://', 'https'=>'https://');
+
+				$protocolOptions = '<select name="protocol" id="protocol">';
+				foreach($protocols as $optionKey=>$optionValue){
+					$protocolOptions .= '<option value="' . $optionKey . '"' . ($optionKey==$protocol ? ' selected' : '') . '> ' . $optionValue . '</option>';
+				}
+				$protocolOptions .= '</select>';
+
 				if(empty($status)){
-					$vps->update($id, array('vps_name'=>$name, 'key'=>$key, 'hash'=>$hash, 'host'=>$host, 'port'=>$port, 'description'=>str_replace(array("\n", ';'), array('\n', '<semicolon>'), $description)));
+					$vps->update($id, array('vps_name'=>$name, 'key'=>$key, 'hash'=>$hash, 'protocol'=>$protocol, 'host'=>$host, 'port'=>$port, 'description'=>str_replace(array("\n", ';'), array('\n', '<semicolon>'), $description)));
 					$_SESSION['status'] = '<p class="green">VPS "' . $name . '" updated.</p>';
 					header('Location: ?p=home');
 					exit;
@@ -308,17 +333,17 @@ switch($action){
 			<form action="?action=edit&id=' . $id . '" method="post">
 				<p>
 					<label for="name">VPS Name</label>
-					<input type="text" name="name" id="name" value="' . $name . '" size="50" /> <span class="red">*</span>
+					<input type="text" name="name" id="name" value="' . $name . '" size="64" /> <span class="red">*</span>
 					<label>Added on</label>
 					' . date('d M, Y', $result[0]['date_added']) . '
 					<label for="key">API Key</label>
-					<input type="text" name="key" id="key" value="' . $key . '" size="50" /> <span class="red">*</span>
+					<input type="text" name="key" id="key" value="' . $key . '" size="64" /> <span class="red">*</span>
 					<label for="hash">API Hash</label>
-					<input type="text" name="hash" id="hash" value="' . $hash . '" size="50" /> <span class="red">*</span>
+					<input type="text" name="hash" id="hash" value="' . $hash . '" size="64" /> <span class="red">*</span>
 					<label for="host">Host</label>
-					<input type="text" name="host" id="host" value="' . $host . '" size="50" /> <span class="red">*</span>
+					' . $protocolOptions . ' <input type="text" name="host" id="host" value="' . $host . '" size="50" /> <span class="red">*</span>
 					<label for="port">Port</label>
-					<input type="text" name="port" id="port" value="' . $port . '" size="50" />
+					<input type="text" name="port" id="port" value="' . $port . '" size="10" />
 					<label for="description">Description</label>
 					<textarea name="description" id="description">' . $description . '</textarea>
 				</p>
@@ -398,6 +423,7 @@ switch($action){
 
 				$solus->setKey($r['key']);
 				$solus->setHash($r['hash']);
+				$solus->setProtocol($r['protocol']);
 				$solus->setHost($r['host']);
 				if($r['port']) $solus->setPort($r['port']);
 
@@ -418,7 +444,7 @@ switch($action){
 				$output .= '<div class="tr">
 					<div class="td" style="width:8%;"><a href="?action=view&id=' . $r['vps_id'] . '">' . $status . '</a></div>
 					<div class="td" style="width:22%;">' . $r['vps_name'] . '</div>
-					<div class="td" style="width:35%;">' . $r['description'] . '</div>
+					<div class="td" style="width:35%;">' . str_replace(array('\n', '<semicolon>'), array('', ';'), $r['description']) . '</div>
 					<div class="td" style="width:15%;">
 						<a href="?action=boot&id=' . $r['vps_id'] . '"><img src="images/boot.gif" border="0" alt="Boot" title="Boot" align="absMiddle" /></a>
 						<a href="?action=shutdown&id=' . $r['vps_id'] . '"><img src="images/shutdown.gif" border="0" alt="Shutdown" title="Shutdown" align="absMiddle" /></a>

@@ -22,6 +22,7 @@
 
 final class SolusVM{
 	private $ch ;
+	private $protocol = 'http';
 	private $host = '';
 	private $port = '';
 	private $key = '';
@@ -54,6 +55,10 @@ final class SolusVM{
 		}
 		$this->port = $port;
 		return true;
+	}
+
+	public function setProtocol($protocol){
+		if($protocol == 'https') $this->protocol = $protocol;
 	}
 
 	public function setKey($key){
@@ -98,7 +103,7 @@ final class SolusVM{
 
 		$ctx = stream_context_create(array('http'=>array('timeout'=>5)));
 
-		$data = file_get_contents('https://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action, 0, $ctx);
+		$data = file_get_contents($this->protocol . '://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action, 0, $ctx);
 
 		if(preg_match_all('/<(.*?)>([^<]+)<\/\\1>/i', $data, $matches)){
 			$result = array();
