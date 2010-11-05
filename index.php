@@ -41,6 +41,7 @@ define('TABLES', ROOT . 'tables' . DS);
 
 /** Import required functions and libraries **/
 // Load configuration
+file_exists(ROOT . 'configuration.php') or die('Cannot find "configuration.php".');
 include(ROOT . 'configuration.php');
 
 // Common functions
