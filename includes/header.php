@@ -34,7 +34,7 @@
 <body>
 	<div id="wrap">
 		<div id="header">
-			<span id="slogan"> All VPSes in one place</span>
+			<span id="slogan"> All VPSes under one roof</span>
 			<?php if($showMenu){ ?>
 			<ul>
 				<li<?php if($q == 'home') echo ' id="current"'; ?>><a href="?q=home"><span>Home</span></a></li>

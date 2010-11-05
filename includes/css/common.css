@@ -49,9 +49,9 @@ input.button{margin:0;font:bolder 12px Arial,Sans-serif;border:1px solid #CCC;pa
 
 #wrap{margin:0 auto;width:780px;}
 #header{position:relative;margin:0;padding:0;height:60px;}
-#header span#slogan{z-index:3;position:absolute;left:3px;bottom:7px;font:1.1em Verdana,Arial,Tahoma,Sans-serif;color:#FFF;}
+#header span#slogan{z-index:3;position:absolute;left:3px;bottom:7px;padding-left:90px;font:1.1em Verdana,Arial,Tahoma,Sans-serif;color:#FFF;}
 #header-logo{position:relative;clear:both;height:50px;margin:0;padding:0;}
-#header-logo #logo{position:absolute;top:3px;left:5px;font:bold 30px "trebuchet MS",Arial,Tahoma,Sans-Serif;margin:0;padding:0;letter-spacing:-1px;color:#000;}
+#header-logo #logo{position:absolute;top:3px;left:5px;font:bold 30px "trebuchet MS",Arial,Tahoma,Sans-Serif;margin:0;padding-left:0;padding-left:80px;letter-spacing:-1px;color:#000;}
 #header ul{position:absolute;margin:0;list-style:none;right:-18px ;bottom:3px;font:bold 13px 'Trebuchet MS',Arial,Sans-serif;}
 #header li{display:inline;margin:0;padding:0;}
 #header a{float:left;background:url(../../images/tableft.gif) no-repeat left top;margin:0;padding:0 0 0 4px;text-decoration:none;}
