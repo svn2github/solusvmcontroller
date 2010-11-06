@@ -290,7 +290,7 @@ switch($action){
 			$name = isset($_POST['name']) ? $_POST['name'] : $result[0]['vps_name'];
 			$key = isset($_POST['key']) ? $_POST['key'] : $result[0]['key'];
 			$hash = isset($_POST['hash']) ? $_POST['hash'] : $result[0]['hash'];
-			$protocol = isset($_POST['protocol']) ? $_POST['protocol'] : 'http';
+			$protocol = isset($_POST['protocol']) ? $_POST['protocol'] : $result[0]['protocol'];
 			$protocol = ($protocol == 'https') ? 'https' : 'http';
 			$host = isset($_POST['host']) ? $_POST['host'] : $result[0]['host'];
 			$port = isset($_POST['port']) ? $_POST['port'] : $result[0]['port'];

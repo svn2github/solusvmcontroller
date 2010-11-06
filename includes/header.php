@@ -47,6 +47,7 @@
 		</div>
 
 		<div id="header-logo">
+			<img src="images/svmcontroller_logo.png" width="85" height="85" border="0" style="position:absolute;top:-50px;;" />
 			<div id="logo">SolusVM<span class="red">Controller</span></div>
 			<?php if(isset($_SESSION['full_name'])) echo '<div style="float:right;margin-top:10px;">Welcome, ' . $_SESSION['full_name'] . '!</div>'; ?>
 		</div>
