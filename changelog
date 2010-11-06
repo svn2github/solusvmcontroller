@@ -1,3 +1,9 @@
+v1.21 (06 Nov, 2010)
+- Added SolusVMController logo.
+- Changed slogan to "All VPSes under one roof".
+- Fixed issue with protocol not auto selected during edit VPS.
+
+
 v1.2 (01 Nov, 2010)
 - Updated CSS to make forms look more visible.
 - Fixed security issue with cross-side scripting.
