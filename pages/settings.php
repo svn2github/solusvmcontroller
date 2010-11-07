@@ -62,6 +62,8 @@ if(isset($_POST['fullName'])){
 		}
 	}
 
+	//$status = '<p class="red">This feature has been disabled in demo.</p>';
+
 	if(empty($status)){
 		$user = new csvHandler(TABLES . USER_TABLE, ';', 'user_id');
 

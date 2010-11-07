@@ -30,10 +30,10 @@ include(INCLUDES . 'header.php');
 	Please make sure your VPS provider has enabled API access in order to use this application.
 </p>
 <p>
-	If you found any errors or bugs in this application, feel free to contact me by e-mail at <a href="mailto:seikan.kiu@gmail.com">seikan.kiu@gmail.com</a>. Latest version of SolusVMController is available at <a href="http://seikan.me/solusvmcontroller">http://seikan.me/solusvmcontroller</a>.
+	If you found any errors or bugs in this application, feel free to contact us at <a href="http://solusvmcontroller.com/?q=contact" target="_blank">here</a>. Latest version of SolusVMController is available at <a href="http://solusvmcontroller.com">http://solusvmcontroller.com</a>.
 </p>
 <p>
-	If you feel this application helps you, you may consider to send me donation <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=seikan%2ekiu%40gmail%2ecom&lc=GB&item_name=Donation%20for%20SolusVMController&currency_code=USD&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" target="_blank">here</a>.
+	If you feel this application helps you, you may consider to send me donation <a href="http://goo.gl/hMiiq" target="_blank">here</a>.
 </p>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>
