@@ -104,7 +104,7 @@ switch($action){
 				}
 
 				if(empty($status)){
-					$group->update($id, array('group_name'=>$name, 'website_url'=>$website, 'support_url'=>$supportPage));
+					$group->update($id, array('group_name'=>$name));
 					$_SESSION['status'] = '<p class="green">' . str_replace('%name%', $name, GROUP_HAS_BEEN_UPDATED) . '</p>';
 					header('Location: ?q=group');
 					exit;
