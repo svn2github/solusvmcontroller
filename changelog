@@ -1,3 +1,11 @@
+v2.0 (20 Nov, 2010)
+- Added group & provider to categorise VPS.
+- Added new fields in VPS information: country, location, price, period, due date
+- Added AJAX style status check to avoid timeout.
+- Minor changes on GUI with more icons.
+- Added multi languages support: English, Chinese Simplified, Chinese Traditional.
+
+
 v1.21 (06 Nov, 2010)
 - Added SolusVMController logo.
 - Changed slogan to "All VPSes under one roof".

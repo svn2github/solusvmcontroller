@@ -21,10 +21,12 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
-$title = 'Error 404: Page not found';
+$title = ERROR_404_PAGE_NOT_FOUND;
+
+$showMenu = 0;
 include(INCLUDES . 'header.php');
 ?>
-<h1>Page not found</h1>
-<p>Ops! I'm sorry that the page you are trying to access cannot be found in our system.</p>
+<h1><?php echo PAGE_NOT_FOUND; ?></h1>
+<p><?php echo OPS_I_M_SORRY_THAT_THE_PAGE; ?></p>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>

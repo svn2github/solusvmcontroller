@@ -21,35 +21,27 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
-$title = 'Help';
+$title = HELP;
 include(INCLUDES . 'header.php');
 ?>
 <a name="top"></a>
-<h1>Help</h1>
+<h1><?php echo HELP; ?></h1>
 <p>
 	<ol>
-		<li><a href="#1">How do I get my API key and API hash?</a></li>
-		<li><a href="#2">What is my host?</a></li>
+		<li><a href="#1"><?php echo HOW_DO_I_GET_MY_API_KEY_AND_API_HASH; ?></a></li>
+		<li><a href="#2"><?php echo WHAT_IS_MY_HOST; ?></a></li>
 	</ol>
 </p>
 <p>&nbsp;</p>
 <p>
-	<a name="1"><h3>How do I get my API key and API hash?</h3></a>
-	1. Login to your SolusVM contorl panel.<br />
-	2. From you VPS list, click "Manage".<br />
-	<img src="images/screenhot001.jpg" width="335" height="172" border="0" alt="" class="screenshot" /><br /><br />
-	3. Choose "API Settings" from left menu.<br />
-	<img src="images/screenhot002.jpg" width="372" height="264" border="0" alt="" class="screenshot" /><br /><br />
-	4. Press "Generate" button.<br />
-	<img src="images/screenhot003.jpg" width="455" height="234" border="0" alt="" class="screenshot" /><br /><br />
-	5. Your API key and API hash is now generated.<br />
-	<img src="images/screenhot004.jpg" width="497" height="254" border="0" alt="" class="screenshot" /><br /><br />
-	<div style="float:right"><a href="#top">Back to top</a></div>
+	<a name="1"><h3><?php echo HOW_DO_I_GET_MY_API_KEY_AND_API_HASH; ?></h3></a>
+	<?php echo ANSWER1; ?>
+	<div style="float:right"><a href="#top"><?php echo BACK_TO_TOP; ?></a></div>
 </p>
 <p>
-	<a name="2"><h3>What is my host?</h3></a>
-	Please note that host is not hostname of your VPS. It is the hostname of your SolusVM control panel. If your URL to login SolusVM is <a href="#">https://yourvpsprovider.com:5656/login.php</a>, your host will be <b>yourvpsprovider.com</b> and port is <b>5656</b>.<br />
-	<div style="float:right"><a href="#top">Back to top</a></div>
+	<a name="2"><h3><?php echo WHAT_IS_MY_HOST; ?></h3></a>
+	<?php echo ANSWER2; ?>
+	<div style="float:right"><a href="#top"><?php echo BACK_TO_TOP; ?></a></div>
 </p>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>

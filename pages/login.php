@@ -22,7 +22,7 @@
 
 defined('INDEX') or die('Access is denied.');
 if(isset($_SESSION['user_id'])){
-	header('Location: ?q=home');
+	header('Location: ?q=vps');
 	exit;
 }
 
@@ -31,7 +31,7 @@ $username = isset($_POST['username']) ? $_POST['username'] : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
 if(isset($_POST['username'])){
-	$user = new csvHandler(TABLES . USER_TABLE, ';', 'user_id');
+	$user = new csvHandler(TABLES . SVMC_CODE . 'user.tab', '|', 'user_id');
 
 	$result = $user->select('username', $username);
 
@@ -40,35 +40,28 @@ if(isset($_POST['username'])){
 			$_SESSION['user_id'] = $result[0]['user_id'];
 			$_SESSION['full_name'] = $result[0]['full_name'];
 			$_SESSION['username'] = $result[0]['username'];
+			$_SESSION['time_zone'] = $result[0]['time_zone'];
+			$_SESSION['dst'] = $result[0]['dst'];
 
-			header('Location: ?q=home');
+			header('Location: ?q=vps');
 			exit;
 		}
-		else{
-			$status = '<p class="red">Invalid username or password.</p>';
-		}
 	}
-	else{
-		$status = '<p class="red">Invalid username or password.</p>';
-	}
-
+	$status = '<p class="red">' . INVALID_USERNAME_OR_PASSWORD . '</p>';
 }
 
-$title = 'Login Page';
+$title = LOGIN_PAGE;
 include(INCLUDES . 'header.php');
 ?>
-<h1>Administrator Login</h1>
+<h1><?php echo ADMINISTRATOR_LOGIN; ?></h1>
 <form action="?q=login" method="post">
 	<?php echo $status; ?>
-	<p>
-		<label for="username">Username</label>
-		<input type="text" name="username" id="username" value="<?php echo $username; ?>" size="30" />
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" value="" size="30" />
-	</p>
-	<p>
-		<input class="button" type="submit" value="Login" />
-	</p>
+	<label for="username"><?php echo USERNAME; ?></label>
+	<input type="text" name="username" id="username" value="<?php echo $username; ?>" maxlength="16" size="30" class="text" />
+	<label for="password"><?php echo PASSWORD; ?></label>
+	<input type="password" name="password" id="password" value="" maxlength="16" size="30" class="text" />
+	<p>&nbsp;</p>
+	<input class="button" type="submit" value="<?php echo LOGIN; ?>" />
 </form>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>

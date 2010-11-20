@@ -35,6 +35,7 @@ define('ROOT', dirname(__FILE__) . DS);
 
 // Define folders directory
 define('INCLUDES', ROOT . 'includes' . DS);
+define('LANGUAGES', ROOT . 'languages' . DS);
 define('LIBRARIES', ROOT . 'libraries' . DS);
 define('PAGES', ROOT . 'pages' . DS);
 define('TABLES', ROOT . 'tables' . DS);
@@ -55,23 +56,23 @@ require(LIBRARIES . 'solusvm.class.php');
 
 
 // Clean up all GET and POST values
-if(isset($_GET)) foreach($_GET as $key=>$value) $_GET[$key] = htmlspecialchars(stripslashes(trim($value)), ENT_QUOTES, 'UTF-8');
+if(isset($_GET)) foreach($_GET as $key=>$value) $_GET[$key] = stripslashes(trim($value));
 if(isset($_POST)){
 	foreach($_POST as $key=>$value){
 		if(is_array($value)){
 			foreach($value as $k=>$v){
-				$value[$k] = htmlspecialchars(stripslashes(trim($v)), ENT_QUOTES, 'UTF-8');
+				$value[$k] = stripslashes(trim($v));
 			}
 			$_POST[$key] = $value;
 		}
 		else{
-			$_POST[$key] = htmlspecialchars(stripslashes(trim($value)), ENT_QUOTES, 'UTF-8');
+			$_POST[$key] = stripslashes(trim($value));
 		}
 	}
 }
 
 // Get requested page
-$q = isset($_GET['q']) ? $_GET['q'] : 'home';
+$q = isset($_GET['q']) ? $_GET['q'] : 'vps';
 
 // Start session
 if(session_id() == ''){
@@ -87,10 +88,21 @@ if(session_id() == ''){
 // Check installation status
 if(!defined('INSTALLED')){
 	file_exists(ROOT . 'setup.php') or die('Cannot find "setup.php". Installation aborted.');
-
 	include(ROOT . 'setup.php');
 	exit;
 }
+
+// Include language file
+$languageCode = UI_LANGUAGE;
+
+if(isset($_SESSION['user_id'])){
+	$user = new csvHandler(TABLES . SVMC_CODE . 'user.tab', '|', 'user_id');
+
+	$result = $user->select('user_id', $_SESSION['user_id']);
+	if($result) $languageCode = $result[0]['language'];
+}
+
+if(file_exists(LANGUAGES . $languageCode . '.php')) include(LANGUAGES . $languageCode . '.php');
 
 // Display requested page
 $showSidebar = 0;

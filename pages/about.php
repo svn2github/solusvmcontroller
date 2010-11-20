@@ -24,16 +24,20 @@ defined('INDEX') or die('Access is denied.');
 $title = 'About';
 include(INCLUDES . 'header.php');
 ?>
-<h1>SolusVMController v1.21</h1>
+<h1>SolusVMController v <?php echo SVMC_VERSION; ?></h1>
 <p>
-	SolusVMController is free web based application to control all your SolusVM based VPSes under one interface. This application access your VPS using API provided by <a href="http://solusvm.com" target="_blank">Soluslabs</a>.
-	Please make sure your VPS provider has enabled API access in order to use this application.
+	<?php echo SOLUSVMCONTROLLER_IS_FREE_WEB_BASED_APPLICATION_TO_CONTROL; ?>
 </p>
 <p>
-	If you found any errors or bugs in this application, feel free to contact us at <a href="http://solusvmcontroller.com/?q=contact" target="_blank">here</a>. Latest version of SolusVMController is available at <a href="http://solusvmcontroller.com">http://solusvmcontroller.com</a>.
+	<?php echo IF_YOU_FOUND_ANY_ERRORS_OR_BUGS_IN_THIS_APPLICATION; ?>
 </p>
 <p>
-	If you feel this application helps you, you may consider to send me donation <a href="http://goo.gl/hMiiq" target="_blank">here</a>.
+	<?php echo IF_YOU_FEEL_THIS_APPLICATION_HELPS_YOU; ?>
+</p>
+<p>&nbsp;</p>
+<h1><?php echo CREDITS; ?></h1>
+<p>
+	<?php echo SOLUSVMCONTROLLER_GUI_IS_MODIFIED_FROM_TEMPLATE; ?>
 </p>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>

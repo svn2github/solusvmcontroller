@@ -42,4 +42,36 @@ function isRewritable($path){
 	if(!$rm) @unlink($path);
 	return true;
 }
+
+// Get timestamp
+function getTimestamp($timestamp='', $timeZone=0, $dst=0){
+	$timestamp = ($timestamp) ? $timestamp : time() - date('Z');
+	$h = ($timeZone < 0) ? $timeZone*-1 : $timeZone;
+	if($dst) $h = ($timeZone < 0) ? $h-1 : $h+1;
+	$ms = $h * 3600;
+
+	return ($timeZone < 0) ? $timestamp-$ms : $timestamp+$ms;
+}
+
+// Calculate the duration between two timestamp
+function duration($timeStart, $timeEnd, $level=1){
+	$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+	$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
+
+	$difference = ($timeEnd > $timeStart) ? ($timeEnd - $timeStart) : ($timeStart - $timeEnd);
+	$level = ($level < 1) ? 1 : $level;
+
+	$i = sizeof($lengths) - 1;
+	$duration = '';
+
+	while($i >= $level){
+		if($difference > $lengths[$i-1]){
+			$val = floor($difference / $lengths[$i-1]);
+			$duration .= $val . ' ' . $periods[$i-1] . ($val > 1 ? 's ' : ' ');
+			$difference -= ($val * $lengths[$i-1]);
+		}
+		$i--;
+	}
+	return ($duration == '') ? '-' : $duration;
+}
 ?>

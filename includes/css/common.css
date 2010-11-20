@@ -35,17 +35,23 @@ hr{color:#DBDBDB;}
 
 img.screenshot{background:#FAFAFA;border:1px solid #DCDCDC;padding:8px;}
 
-form{margin:10px;padding:15px 10px;border:1px solid #f2f2f2;background-color:#F3F3F3;}
+form{padding:15px 10px;border:1px solid #f2f2f2;background-color:#F9F9F9;}
 label{display:block;font-weight:bold;margin:5px 0;}
-input{padding:3px 5px;border:1px solid #eee;font-size:1em;color:#777;}
-textarea{width:400px;padding:3px 5px;font-size:1em;border:1px solid #eee;height:100px;display:block;color:#777;}
+input{padding:3px 5px;border:1px solid #C1C1C1;font-size:1em;color:#777;}
+textarea{width:486px;padding:3px 5px;font-size:1em;border:1px solid #C1C1C1;height:100px;display:block;color:#777;}
+input.text{font-size:1em;width:200px;height:18px;}
 input.button{margin:0;font:bolder 12px Arial,Sans-serif;border:1px solid #CCC;padding:5px 3px;background:#FFF;color:#CC0000;}
+select{border:1px solid #C1C1C1;margin-right:5px;padding:3px;font-size:1em;}
+select option{padding:1px 5px 1px 1px;}
 
 .table{width:100%;border:1px solid #EBEBEB;}
 .table .th{background-color:#747474;color:#fff;font-weight:bold;border-bottom:1px dotted #EBEBEB;}
 .table .tr{height:30px;}
 .table .tr:nth-child(odd){background-color:#F3F3F3;}
 .table .td{float:left;width:23%;padding-top:1%;padding-left:2%;overflow:hidden;height:22px;}
+
+fieldset{border:1px solid #D6D8DA;padding:8px;}
+legend{color:#555;background:#F3F3F3;border:1px solid #D6D8DA;padding:2px 6px;}
 
 #wrap{margin:0 auto;width:780px;}
 #header{position:relative;margin:0;padding:0;height:60px;}
@@ -63,19 +69,46 @@ input.button{margin:0;font:bolder 12px Arial,Sans-serif;border:1px solid #CCC;pa
 #header #current a{background-position:0% -42px;}
 #header #current a span{background-position:100% -42px;}
 
-#main{float:right;margin:0;padding:0;width:545px;}
+#main{float:right;margin:0;padding:0;width:610px;}
 #main h1{margin:10px 0 15px 0;padding:5px 5px 5px 8px;font-size:105%;color:#FFF;text-transform:uppercase;background-color:#CC0000;letter-spacing:.5px;}
 
-#sidebar{float:left;width:220px;margin:0;padding:0;background-color:#FFFFFF;}
+#sidebar{float:left;width:160px;margin:0;padding:0;background-color:#FFFFFF;}
 #sidebar h1{margin:10px 0 0 0;padding:5px 5px 5px 8px;font-size:105%;color:#FFF;text-transform:uppercase;background:#333;letter-spacing:1px;}
-#sidebar .left-box{border:1px solid #EBEBEB;margin:0 0 5px 0;background:#FFF;}
+#sidebar .left-box{border:1px solid #EBEBEB;border-bottom:none;margin:0 0 5px 0;background:#FFF;}
 #sidebar ul.sidemenu{list-style:none;text-align:left;margin:3px 0px 8px 0;padding:0;text-decoration:none;}
-#sidebar ul.sidemenu li{border-bottom:1px solid #f2f2f2;background:url(../../images/bullet.gif) no-repeat 3px 6px;padding:4px 5px 4px 28px;margin:0;}
+#sidebar ul.sidemenu li{border-bottom:1px solid #f2f2f2;padding:4px 5px 4px 4px;margin:0;}
 #sidebar ul.sidemenu a{font-weight:bolder;padding:3px 0px;background:none;}
 
-.footer{clear:both;border-top:1px solid #f2f2f2;background:#FFF url(../../images/footerbg.gif) repeat-x;padding:2px 0 10px 0;text-align:center;line-height:1.5em;font-size:.9em;}
+.footer{clear:both;border-top:1px solid #f2f2f2;background:#F6F6F6 url(../../images/footerbg.gif) repeat-x;padding:2px 0 10px 0;text-align:center;line-height:1.5em;font-size:.9em;}
 .footer a{text-decoration:none;font-weight:bold;}
+
+#browse{text-align:right;margin-bottom:5px;}
+#browse li{display:inline;margin:0;padding-left:10px;}
 
 .clear{clear:both;}
 .red{color:#CC0000;}
 .green{color:#00CC00;}
+p.green{padding-left:20px;background:url(../../images/icons/accept.png) 0 2px no-repeat;}
+p.red{padding-left:20px;background:url(../../images/icons/error.png) 0 2px no-repeat;}
+.separator{margin:4px 10px 10px 10px;border-top:1px solid #D6D8DA;}
+.spacer{display:block;padding:0;margin:0;}
+#horizontal ul li{display:inline;float:left;margin-right:15px;}
+
+/* start of calendarview */
+div.calendar{font-size:smaller;color:#000;}
+div.calendar.popup{margin-left:-40px;margin-top:-100px;}
+div.calendar table{background-color:#eee;border:1px solid #aaa;border-collapse:collapse;}
+div.calendar thead{background-color:white;}
+div.calendar td,
+div.calendar th{padding:3px;text-align:center;}
+div.calendar td.title{font-weight:bold;}
+div.calendar th{background:#ddd;border-bottom:1px solid #ccc;border-top:1px solid #ccc;font-weight:bold;color:#555;}
+div.calendar tr.days td{width:2em;color:#555;text-align:center;cursor:pointer;}
+div.calendar tr.days td:hover,
+div.calendar td.button:hover{background-color:#34ABFA;cursor:pointer;}
+div.calendar tr.days td:active
+div.calendar td.button:active{background-color:#cde;}
+div.calendar tr.days td.selected{font-weight:bold;background-color:#fff;color:#000;}
+div.calendar tr.days td.today{font-weight:bold;color:#D50000;}
+div.calendar tr.days td.otherDay{color:#bbb;}
+/* end of calendarview */

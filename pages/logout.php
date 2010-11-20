@@ -24,14 +24,16 @@ defined('INDEX') or die('Access is denied.');
 unset($_SESSION['user_id']);
 unset($_SESSION['full_name']);
 unset($_SESSION['username']);
+unset($_SESSION['time_zone']);
+unset($_SESSION['dst']);
 
-$title = 'Logout';
+$title = LOGOUT;
 $metaRedirect = '?q=login';
 include(INCLUDES . 'header.php');
 ?>
-<h1>Logout</h1>
+<h1><?php echo LOGOUT; ?></h1>
 <p>
-	You are logging out...
+	<?php echo YOU_ARE_LOGGING_OUT . ' ...'; ?>
 </p>
 <p>&nbsp;</p>
 <?php include(INCLUDES . 'footer.php'); ?>

@@ -22,11 +22,25 @@
 ?>
 		<?php if($showSidebar){ ?>
 		<div id="sidebar">
-			<h1>CONTROL</h1>
+			<h1><?php echo CONTROL; ?></h1>
 			<div class="left-box">
 				<ul class="sidemenu">
-					<li><a href="?action=add">Add VPS</a></li>
-					<li><a href="?t=<?php echo time(); ?>">Check Status</a></li>
+					<?php
+					switch($q){
+						case 'vps':
+							echo '<li><a href="?q=vps&action=add"><img src="images/icons/computer_add.png" width="16" height="16" border="0" alt="' . ADD_VPS . '" title="' . ADD_VPS . '" align="absMiddle" /> ' . ADD_VPS . '</a></li>';
+							if(!isset($_GET['action'])) echo '<li><a href="javascript:;" onclick="getStatus();"><img src="images/icons/refresh.png" width="16" height="16" border="0" alt="' . CHECK_STATUS . '" title="' . CHECK_STATUS . '" align="absMiddle" /> ' . CHECK_STATUS . '</a></li>';
+						break;
+
+						case 'group':
+							echo '<li><a href="?q=group&action=add"><img src="images/icons/folder_add.png" width="16" height="16" border="0" alt="' . ADD_GROUP . '" title="' . ADD_GROUP . '" align="absMiddle" /> ' . ADD_GROUP . '</a></li>';
+						break;
+
+						case 'provider':
+							echo '<li><a href="?q=provider&action=add"><img src="images/icons/people_add.png" width="16" height="16" border="0" alt="' . ADD_PROVIDER . '" title="' . ADD_PROVIDER . '" align="absMiddle" /> ' . ADD_PROVIDER . '</a></li>';
+						break;
+					}
+					?>
 				</ul>
 			</div>
 		</div>
@@ -36,8 +50,7 @@
 	<div class="footer">
 		<p>
 			<a href="http://seikan.me/solusvmcontroller">SolusVMController</a> is Free Software released under the GNU/GPL License.
-			SolusVM is registered trademark of <a href="http://www.solusvm.com/">Soluslabs</a> Ltd.<br />
-			Template is modified from <a href="http://www.styleshout.com/">styleshout</a>.
+			SolusVM is registered trademark of <a href="http://www.solusvm.com/">Soluslabs</a> Ltd.
 		</p>
 	</div>
 </body>

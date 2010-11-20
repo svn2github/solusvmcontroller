@@ -85,6 +85,10 @@ final class SolusVM{
 		return $this->get('status');
 	}
 
+	public function getInfo(){
+		return $this->get('info');
+	}
+
 	private function get($action){
 		if(empty($this->host)){
 			$this->errors[] = 'No host specified.';
@@ -109,7 +113,7 @@ final class SolusVM{
 		elseif(function_exists('fsockopen')){
 			$data = $this->socketGet($url);
 		}
-		elseif(@ini_get('allow_url_fopen')){
+		elseif(ini_get('allow_url_fopen')){
 			$data = $this->fileGet($url);
 		}
 		else{
@@ -129,7 +133,7 @@ final class SolusVM{
 
 	private function fileGet($url){
 		$ctx = stream_context_create(array('http'=>array('timeout'=>5)));
-		return @file_get_contents($url, 0, $ctx);
+		return file_get_contents($url, 0, $ctx);
 	}
 
 	private function socketGet($url){
