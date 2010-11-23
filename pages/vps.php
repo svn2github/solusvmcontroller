@@ -789,6 +789,13 @@ switch($action){
 		$title = VPS_LIST;
 
 		$scripts = '
+// preload images
+(new Image()).src=\'images/icons/loading.gif\';
+(new Image()).src=\'images/icons/connect_error.png\';
+(new Image()).src=\'images/icons/connect_offline.png\';
+(new Image()).src=\'images/icons/connect_online.png\';
+(new Image()).src=\'images/icons/connect_unknown.png\';
+
 function getStatus(){
 	var rows = $A(document.getElementsByTagName(\'div\'));
 

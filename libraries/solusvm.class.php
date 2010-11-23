@@ -126,6 +126,10 @@ final class SolusVM{
 			foreach($matches[1] as $x => $y){
 				$result[$y] = $matches[2][$x];
 			}
+
+			if(!isset($result['status'])) return;
+			if($result['status'] != 'success') return;
+
 			return $result;
 		}
 		return;
