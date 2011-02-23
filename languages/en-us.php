@@ -495,13 +495,13 @@ define('ALL_VPSES_UNDER_ONE_ROOF', 'All VPSes under one roof');
 	define('WHAT_IS_MY_HOST', 'What is my host?');
 	define('ANSWER1', '1. Login to your SolusVM contorl panel.<br />
 	2. From you VPS list, click "Manage".<br />
-	<img src="images/screenhot001.jpg" width="335" height="172" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot001.jpg" width="335" height="172" border="0" class="screenshot" /><br /><br />
 	3. Choose "API Settings" from left menu.<br />
-	<img src="images/screenhot002.jpg" width="372" height="264" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot002.jpg" width="372" height="264" border="0" class="screenshot" /><br /><br />
 	4. Press "Generate" button.<br />
-	<img src="images/screenhot003.jpg" width="455" height="234" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot003.jpg" width="455" height="234" border="0" class="screenshot" /><br /><br />
 	5. Your API key and API hash is now generated.<br />
-	<img src="images/screenhot004.jpg" width="497" height="254" border="0" class="screenshot" /><br /><br />');
+	<img src="images/screenshot004.jpg" width="497" height="254" border="0" class="screenshot" /><br /><br />');
 	define('ANSWER2', 'Please note that host is not hostname of your VPS. It is the hostname of your SolusVM control panel. If your URL to login SolusVM is <a href="#">https://yourvpsprovider.com:5656/login.php</a>, your host will be <b>yourvpsprovider.com</b> and port is <b>5656</b>.<br />');
 /* end of help page */
 

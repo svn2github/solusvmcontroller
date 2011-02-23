@@ -495,13 +495,13 @@ define('ALL_VPSES_UNDER_ONE_ROOF', 'VPS同一屋檐下');
 	define('WHAT_IS_MY_HOST', '我的主機名字是什麽？');
 	define('ANSWER1', '1. 登錄您的SolusVM管理界面。<br />
 	2. 從您的VPS列表中，點擊“Manage”。<br />
-	<img src="images/screenhot001.jpg" width="335" height="172" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot001.jpg" width="335" height="172" border="0" class="screenshot" /><br /><br />
 	3. 在左邊菜單中選擇“API Settings”。<br />
-	<img src="images/screenhot002.jpg" width="372" height="264" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot002.jpg" width="372" height="264" border="0" class="screenshot" /><br /><br />
 	4. 點擊“Generate”按鈕。<br />
-	<img src="images/screenhot003.jpg" width="455" height="234" border="0" class="screenshot" /><br /><br />
+	<img src="images/screenshot003.jpg" width="455" height="234" border="0" class="screenshot" /><br /><br />
 	5. 您的API key以及API hash已經生成了。<br />
-	<img src="images/screenhot004.jpg" width="497" height="254" border="0" class="screenshot" /><br /><br />');
+	<img src="images/screenshot004.jpg" width="497" height="254" border="0" class="screenshot" /><br /><br />');
 	define('ANSWER2', '這裏指的不是您的VPS主機名字，而是您的SolusVM管理界面的主機名字。如果您的SolusVM登錄網址是<a href="#">https://yourvpsprovider.com:5656/login.php</a>, 那您的主機名字就是<b>yourvpsprovider.com</b>而端口則是<b>5656</b>。<br />');
 /* end of help page */
 
