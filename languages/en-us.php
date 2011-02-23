@@ -121,6 +121,9 @@ define('ALL_VPSES_UNDER_ONE_ROOF', 'All VPSes under one roof');
 	define('VPS_HAS_BEEN_REMOVED', 'VPS "%name%" has been removed.');
 	define('CONFIRM_TO_REMOVE_VPS', 'Confirm to remove VPS "%name%"?');
 	define('EXPIRING_IN_DAY', 'Expiring in %day% day(s).');
+	define('DISK_SPACE', 'Disk Space');
+	define('MEMORY', 'Memory');
+	define('BANDWIDTH', 'Bandwidth');
 
 	$countryList = array(
 		'AF'=>'Afghanistan',

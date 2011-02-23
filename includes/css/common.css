@@ -112,3 +112,6 @@ div.calendar tr.days td.selected{font-weight:bold;background-color:#fff;color:#0
 div.calendar tr.days td.today{font-weight:bold;color:#D50000;}
 div.calendar tr.days td.otherDay{color:#bbb;}
 /* end of calendarview */
+
+div.percentage{border:1px solid #ccc;width:350px;margin:2px 5px 2px 0;padding:1px;float:left;background:white;}
+div.percentage > div{background-color:#ACE97C;height:12px;}

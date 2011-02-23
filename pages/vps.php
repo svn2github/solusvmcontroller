@@ -276,6 +276,9 @@ switch($action){
 			$data = $solus->getStatus();
 
 			if($data){
+				$ipv4 = array();
+				$ipv6 = array();
+
 				$group = new csvHandler(TABLES . SVMC_CODE . 'group.tab', '|', 'group_id');
 				$groupResult = $group->select('group_id', $result[0]['group_id']);
 				$groupName = ($groupResult) ? $groupResult[0]['group_name'] : '-';
@@ -296,10 +299,24 @@ switch($action){
 
 				$_SESSION['vps_' . $id] = ($data['statusmsg'] == 'online') ? '<img src="images/icons/connect_online.png" border="0" alt="' . ONLINE . '" title="' . ONLINE . '" align="absMiddle" /> ' . ONLINE : (($data['statusmsg'] == 'offline') ? '<img src="images/icons/connect_offline.png" border="0" alt="' . OFFLINE . '" title="' . OFFLINE . '" align="absMiddle" /> ' . OFFLINE : '<img src="images/icons/connect_error.png" border="0" width="16" height="16" alt="' . ERROR . '" title="' . ERROR . '" align="absMiddle" /> ' . ERROR);
 
+				$ips = @explode(',', $data['ipaddr']);
+
+				foreach($ips as $ip){
+					if(isIPv4($ip)) $ipv4[] = $ip;
+					if(isIPv6($ip)) $ipv6[] = $ip;
+				}
+
 				if(isset($_SESSION['status'])){
 					$output .= $_SESSION['status'];
 					unset($_SESSION['status']);
 				}
+
+				list($totalDiskSpace, $usedDiskSpace, $freeDiskSpace, $diskSpacePercent) = explode(',', $data['hdd']);
+				$totalDiskSpace = displayBytes($totalDiskSpace);
+				list($totalMemory, $usedMemory, $freeMemory, $memoryPercent) = explode(',', $data['mem']);
+				$totalMemory = displayBytes($totalMemory);
+				list($totalBandwidth, $usedBandwidth, $freeBandwidth, $bandwidthPercent) = explode(',', $data['bw']);
+				$totalBandwidth = displayBytes($totalBandwidth);
 
 				$output .= '
 				<fieldset>
@@ -322,15 +339,74 @@ switch($action){
 							</li>
 						</ul>
 					</div>
+					<div class="clear">&nbsp;</div>';
+
+					$output .= '
+					<div id="horizontal">
+						<ul>';
+
+					if(count($ipv4) > 0){
+						$output .= '
+						<li>
+							<label>' . IP_ADDRESS . '</label>
+							' . implode('<br>', $ipv4) . '
+						</li>
+						<li>&nbsp;</li>
+						';
+					}
+
+					if(count($ipv6) > 0){
+						$output .= '
+							<li>
+								<label>' . IP_ADDRESS . ' (IPv6)</label>
+								' . implode('<br>', $ipv6) . '
+							</li>
+							';
+					}
+					$output .= '	</ul>
+					</div>
+					<div class="clear">&nbsp;</div>
+					<div id="horizontal">
+						<ul>
+							<li>
+								<label>' . DISK_SPACE . '</label>
+								<div class="percentage">
+									<div style="width:' . $diskSpacePercent . '%"></div>
+								</div>
+								 ' . bytesTo($usedDiskSpace, substr($totalDiskSpace, strpos($totalDiskSpace, ' ')+1)) . '/' . $totalDiskSpace . ' (' . $diskSpacePercent . '%)
+							</li>
+						</ul>
+					</div>
 					<div class="clear">&nbsp;</div>
 
 					<div id="horizontal">
 						<ul>
 							<li>
-								<label>' . IP_ADDRESS . '</label>
-								' . $data['ipaddress'] . '
+								<label>' . MEMORY . '</label>
+								<div class="percentage">
+									<div style="width:' . $memoryPercent . '%"></div>
+								</div>
+								 ' . bytesTo($usedMemory, substr($totalMemory, strpos($totalMemory, ' ')+1)) . '/' . $totalMemory . ' (' . $memoryPercent . '%)
 							</li>
-							<li>&nbsp;</li>
+						</ul>
+					</div>
+					<div class="clear">&nbsp;</div>
+
+					<div id="horizontal">
+						<ul>
+							<li>
+								<label>' . BANDWIDTH . '</label>
+								<div class="percentage">
+									<div style="width:' . $bandwidthPercent . '%"></div>
+								</div>
+								 ' . bytesTo($usedBandwidth, substr($totalBandwidth, strpos($totalBandwidth, ' ')+1)) . '/' . $totalBandwidth . ' (' . $bandwidthPercent . '%)
+							</li>
+						</ul>
+					</div>
+					<div class="clear">&nbsp;</div>
+
+					<div id="horizontal">
+						<ul>
 							<li>
 								<label>' . LOCATION . '</label>
 								' . $location . '
@@ -338,6 +414,7 @@ switch($action){
 						</ul>
 					</div>
 					<div class="clear">&nbsp;</div>
+
 					<div id="horizontal">
 						<ul>
 							<li>

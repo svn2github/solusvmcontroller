@@ -121,6 +121,10 @@ define('ALL_VPSES_UNDER_ONE_ROOF', 'VPS同一屋檐下');
 	define('VPS_HAS_BEEN_REMOVED', 'VPS主机“%name%”删除成功。');
 	define('CONFIRM_TO_REMOVE_VPS', '确定删除VPS主机“%name%”吗？');
 	define('EXPIRING_IN_DAY', '将在 %day% 天内到期。');
+	define('DISK_SPACE', '硬碟空间');
+	define('MEMORY', '内存容量');
+	define('BANDWIDTH', '网络流量');
+
 
 	$countryList = array(
 		'AF'=>'阿富汗',

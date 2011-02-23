@@ -45,6 +45,9 @@ define('TABLES', ROOT . 'tables' . DS);
 file_exists(ROOT . 'configuration.php') or die('Cannot find "configuration.php".');
 include(ROOT . 'configuration.php');
 
+// Version file
+require(INCLUDES . 'version.php');
+
 // Common functions
 require(INCLUDES . 'functions.php');
 

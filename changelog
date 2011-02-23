@@ -1,3 +1,8 @@
+v2.2 (22 Feb, 2011)
+- Added disk space, memory, and bandwidth usage bar.
+- Added version.php to control version number changes.
+
+
 v2.1 (23 Nov, 2010)
 - Added javascript to preload images when checking VPS status.
 - Fixed solusvm.class.php errors when accessing non-SolusVM host.

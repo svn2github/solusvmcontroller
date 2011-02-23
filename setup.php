@@ -37,6 +37,7 @@ include(file_exists(LANGUAGES . $_SESSION['language'] . '.php') ? LANGUAGES . $_
 
 $title = SOLUSVMCONTROLLER_INSTALLATION;
 include(INCLUDES . 'header.php');
+include(INCLUDES . 'version.php');
 
 $step = isset($_GET['step']) ? $_GET['step'] : 0;
 
@@ -109,7 +110,7 @@ switch($step){
 			echo '<p class="red">' . str_replace('%table%', 'provider', CREATING_TABLE) . ' ' . str_repeat('.', 10) . ' [' . FAIL . ']</p>';
 		}
 
-		if(@file_put_contents(ROOT . 'configuration.php', '<?php' . "\n" . 'define(\'INSTALLED\', 1);' . "\n" . 'define(\'SVMC_VERSION\', \'2.1\');' . "\n" . 'define(\'SVMC_CODE\', \'' . $randomCode . '\');' . "\n" . 'define(\'UI_LANGUAGE\', \'en-us\');' . "\n" . '?>')){
+		if(@file_put_contents(ROOT . 'configuration.php', '<?php' . "\n" . 'define(\'INSTALLED\', 1);' . "\n" . 'define(\'SVMC_CODE\', \'' . $randomCode . '\');' . "\n" . 'define(\'UI_LANGUAGE\', \'en-us\');' . "\n" . '?>')){
 			echo '<p class="green">' . WRITING_CONFIGURATION . ' ' . str_repeat('.', 10) . ' [' . PASS . ']</p>';
 		}
 		else{

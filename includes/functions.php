@@ -74,4 +74,31 @@ function duration($timeStart, $timeEnd, $level=1){
 	}
 	return ($duration == '') ? '-' : $duration;
 }
+
+// Validate IPv4 format
+function isIPv4($ip){
+    return $ip == long2ip(ip2long($ip));
+}
+
+// Validate IPv6 format
+function isIPv6($ip){
+    if(strpos($ip, '::') === false) return preg_match('/^(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4}$/i', $ip);
+    if(substr_count($ip, ':') < 8) return preg_match('/^(?::|(?:[a-f0-9]{1,4}:)+):(?:(?:[a-f0-9]{1,4}:)*[a-f0-9]{1,4})?$/i', $ip);
+
+    return false;
+}
+
+function displayBytes($bytes){
+	$ext = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+	$unitCount = 0;
+	for(; $bytes > 1024; $unitCount++) $bytes /= 1024;
+	return round($bytes, 2) . ' ' . $ext[$unitCount];
+}
+
+function bytesTo($bytes, $unit){
+	$ext = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+
+	for($unitCount=0; $ext[$unitCount] != strtoupper($unit); $unitCount++) $bytes /= 1024;
+	return round($bytes, 2) . ' ' . $ext[$unitCount];
+}
 ?>

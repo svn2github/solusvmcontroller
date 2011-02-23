@@ -105,7 +105,7 @@ final class SolusVM{
 			return;
 		}
 
-		$url = $this->protocol . '://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action;
+		$url = $this->protocol . '://' . $this->host . (!empty($this->port) ? ':' . $this->port : '') . '/api/client/command.php?key=' . $this->key . '&hash=' . $this->hash . '&action=' . $action . '&ipaddr=true&hdd=true&mem=true&&bw=true';
 
 		if(function_exists('curl_init')){
 			$data = $this->curlGet($url);
