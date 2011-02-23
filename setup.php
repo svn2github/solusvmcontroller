@@ -75,7 +75,7 @@ switch($step){
 	case '2':
 		echo '<h1>' . SOLUSVMCONTROLLER_INSTALLATION . ' (' . STEP_2_OF_2 . ')</h1>';
 		$error = 0;
-		$randomCode = substr(sha1(microtime()), rand(0,30), 10);
+		$randomCode = substr(sha1(microtime()), rand(0, 30), 10);
 
 		if(@file_put_contents(TABLES . $randomCode . 'user.tab', 'user_id|full_name|username|password|time_zone|dst|language' . "\n" . '1|Administrator|admin|admin|0|0|en-us' . "\n")){
 			echo '<p class="green">' . str_replace('%table%', 'user', CREATING_TABLE) . ' ' . str_repeat('.', 10) . ' [' . PASS . ']</p>';
