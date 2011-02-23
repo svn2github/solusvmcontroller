@@ -37,7 +37,6 @@ include(file_exists(LANGUAGES . $_SESSION['language'] . '.php') ? LANGUAGES . $_
 
 $title = SOLUSVMCONTROLLER_INSTALLATION;
 include(INCLUDES . 'header.php');
-include(INCLUDES . 'version.php');
 
 $step = isset($_GET['step']) ? $_GET['step'] : 0;
 
