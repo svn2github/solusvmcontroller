@@ -201,25 +201,56 @@ switch($action){
 		if($result){
 			$vps = new csvHandler(TABLES . SVMC_CODE . 'vps.tab', '|', 'vps_id');
 
+			$index = 0;
+			foreach($result as $r){
+				$amount = $vps->select('provider_id', $r['provider_id']);
+				$result[$index]['total'] = count($amount);
+				$index++;
+			}
+
+			$linkProviderName = '<a href="?q=provider&sort=name" class="sorting">' . GROUP_NAME . '</a>';
+			$linkTotal = '<a href="?q=provider&sort=total" class="sorting">' . TOTAL_VPS . '</a>';
+
+			$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+			switch($sort){
+				case 'name-desc':
+					$result = $provider->sort($result, 'provider_name', 'desc');
+					$linkProviderName = '<a href="?q=provider&sort=name" class="sorting desc">' . PROVIDER_NAME . '</a>';
+				break;
+
+				case 'total':
+					$result = $provider->sort($result, 'total');
+					$linkTotal = '<a href="?q=provider&sort=total-desc" class="sorting asc">' . VPS . '</a>';
+				break;
+
+				case 'total-desc':
+					$result = $provider->sort($result, 'total', 'desc');
+					$linkTotal = '<a href="?q=provider&sort=total" class="sorting desc">' . VPS . '</a>';
+				break;
+
+				default:
+					$result = $provider->sort($result, 'provider_name');
+					$linkProviderName = '<a href="?q=provider&sort=name-desc" class="sorting asc">' . PROVIDER_NAME . '</a>';
+				break;
+			}
+
 			$output .= '<div class="table">
 				<div class="th">
-					<div class="td" style="width:20%;">' . PROVIDER_NAME . '</div>
+					<div class="td" style="width:20%;">' . $linkProviderName . '</div>
 					<div class="td" style="width:25%;">' . WEBSITE . '</div>
 					<div class="td" style="width:28%;">' . SUPPORT_PAGE . '</div>
-					<div class="td" style="width:6%;">' . VPS . '</div>
+					<div class="td" style="width:6%;">' . $linkTotal . '</div>
 					<div class="td" style="width:8%;">&nbsp;</div>
 					<div class="clear"></div>
 				</div>';
 
 			foreach($result as $r){
-				$amount = $vps->select('provider_id', $r['provider_id']);
-				$total = count($amount);
-
 				$output .= '<div class="tr">
 					<div class="td" style="width:20%;">' . $r['provider_name'] . '</div>
 					<div class="td" style="width:25%;"><a href="' . $r['website_url'] . '" target="_blank">' . $r['website_url'] . '</a></div>
 					<div class="td" style="width:30%;"><a href="' . $r['support_url'] . '" target="_blank">' . $r['support_url'] . '</a></div>
-					<div class="td" style="width:6%;">' . ($total > 0 ? '<a href="?q=vps&pvdr=' . $r['provider_id'] . '">' . $total . '</a>' : $total) . '</div>
+					<div class="td" style="width:6%;">' . ($r['total'] > 0 ? '<a href="?q=vps&pvdr=' . $r['provider_id'] . '">' . $r['total'] . '</a>' : $r['total']) . '</div>
 					<div class="td" style="width:8%;""><a href="?q=provider&action=edit&id=' . $r['provider_id'] . '"><img src="images/icons/page_white_edit.png" border="0" alt="' . EDIT . '" title="' . EDIT . '" align="absMiddle" /></a> <a href="?q=provider&action=remove&id=' . $r['provider_id'] . '"><img src="images/icons/bin.png" border="0" alt="' . REMOVE . '" title="' . REMOVE . '" align="absMiddle" /></a></div>
 					<div class="clear"></div>
 				</div>';

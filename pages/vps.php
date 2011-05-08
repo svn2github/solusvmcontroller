@@ -86,6 +86,7 @@ switch($action){
 
 		$provider = new csvHandler(TABLES . SVMC_CODE . 'provider.tab', '|', 'provider_id');
 		$result = $provider->select();
+		$result = $provider->sort($result, 'provider_name');
 
 		if($result){
 			foreach($result as $r){
@@ -275,29 +276,32 @@ switch($action){
 			if($result[0]['port']) $solus->setPort($result[0]['port']);
 			$data = $solus->getStatus();
 
+			$output .= '<fieldset>
+					<legend><img src="images/icons/computer.png" border="0" alt="' . $result[0]['vps_name'] . '" title="' . $result[0]['vps_name'] . '" align="absMiddle" /> ' . $result[0]['vps_name'] . '</legend>';
+
+			$group = new csvHandler(TABLES . SVMC_CODE . 'group.tab', '|', 'group_id');
+			$groupResult = $group->select('group_id', $result[0]['group_id']);
+			$groupName = ($groupResult) ? $groupResult[0]['group_name'] : '-';
+
+			$provider = new csvHandler(TABLES . SVMC_CODE . 'provider.tab', '|', 'provider_id');
+			$providerResult = $provider->select('provider_id', $result[0]['provider_id']);
+			$providerName = ($providerResult) ? $providerResult[0]['provider_name'] : '-';
+
+			$location = (isset($countryList[$result[0]['country']])) ? '<img src="images/flags/' . strtolower($result[0]['country']) . '.png" border="0" align="absMiddle" /> ' . $countryList[$result[0]['country']] : '-';
+			$location .= (!empty($result[0]['location'])) ? ' (' . $result[0]['location'] . ')' : '';
+
+			$price = $result[0]['currency'] . ' ' . $currencyList[$result[0]['currency']];
+			$price .= (!empty($result[0]['price'])) ? number_format($result[0]['price'], 2) : '-';
+
+			$date = ($result[0]['due_date']-time() < 0) ? '<span class="red">' . date('d M, Y', getTimestamp($result[0]['due_date'], $_SESSION['time_zone'], $_SESSION['dst'])) . '</span>' : date('d M, Y', getTimestamp($result[0]['due_date'], $_SESSION['time_zone'], $_SESSION['dst']));
+
+				$paymentStatus = ($result[0]['due_date']-time() < 0) ? '<img src="images/icons/coins_disable.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUED . '" title="' . SUBSCRIPTION_DUED . '" align="absMiddle" />' : (($result[0]['due_date']-time() < 604800) ? '<img src="images/icons/coins_error.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" title="' . SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" align="absMiddle" />' : '<br />' . str_replace('%day%', (floor(($result[0]['due_date']-time())/86400)), EXPIRING_IN_DAY));
+
+			$_SESSION['vps_' . $id] = ($data['statusmsg'] == 'online') ? '<img src="images/icons/connect_online.png" border="0" alt="' . ONLINE . '" title="' . ONLINE . '" align="absMiddle" /> ' . ONLINE : (($data['statusmsg'] == 'offline') ? '<img src="images/icons/connect_offline.png" border="0" alt="' . OFFLINE . '" title="' . OFFLINE . '" align="absMiddle" /> ' . OFFLINE : '<img src="images/icons/connect_error.png" border="0" width="16" height="16" alt="' . ERROR . '" title="' . ERROR . '" align="absMiddle" /> ' . ERROR);
+
 			if($data){
 				$ipv4 = array();
 				$ipv6 = array();
-
-				$group = new csvHandler(TABLES . SVMC_CODE . 'group.tab', '|', 'group_id');
-				$groupResult = $group->select('group_id', $result[0]['group_id']);
-				$groupName = ($groupResult) ? $groupResult[0]['group_name'] : '-';
-
-				$provider = new csvHandler(TABLES . SVMC_CODE . 'provider.tab', '|', 'provider_id');
-				$providerResult = $provider->select('provider_id', $result[0]['provider_id']);
-				$providerName = ($providerResult) ? $providerResult[0]['provider_name'] : '-';
-
-				$location = (isset($countryList[$result[0]['country']])) ? '<img src="images/flags/' . strtolower($result[0]['country']) . '.png" border="0" align="absMiddle" /> ' . $countryList[$result[0]['country']] : '-';
-				$location .= (!empty($result[0]['location'])) ? ' (' . $result[0]['location'] . ')' : '';
-
-				$price = $result[0]['currency'] . ' ' . $currencyList[$result[0]['currency']];
-				$price .= (!empty($result[0]['price'])) ? number_format($result[0]['price'], 2) : '-';
-
-				$date = ($result[0]['due_date']-time() < 0) ? '<span class="red">' . date('d M, Y', getTimestamp($result[0]['due_date'], $_SESSION['time_zone'], $_SESSION['dst'])) . '</span>' : date('d M, Y', getTimestamp($result[0]['due_date'], $_SESSION['time_zone'], $_SESSION['dst']));
-
-					$paymentStatus = ($result[0]['due_date']-time() < 0) ? '<img src="images/icons/coins_disable.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUED . '" title="' . SUBSCRIPTION_DUED . '" align="absMiddle" />' : (($result[0]['due_date']-time() < 604800) ? '<img src="images/icons/coins_error.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" title="' . SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" align="absMiddle" />' : '<br />' . str_replace('%day%', (floor(($result[0]['due_date']-time())/86400)), EXPIRING_IN_DAY));
-
-				$_SESSION['vps_' . $id] = ($data['statusmsg'] == 'online') ? '<img src="images/icons/connect_online.png" border="0" alt="' . ONLINE . '" title="' . ONLINE . '" align="absMiddle" /> ' . ONLINE : (($data['statusmsg'] == 'offline') ? '<img src="images/icons/connect_offline.png" border="0" alt="' . OFFLINE . '" title="' . OFFLINE . '" align="absMiddle" /> ' . OFFLINE : '<img src="images/icons/connect_error.png" border="0" width="16" height="16" alt="' . ERROR . '" title="' . ERROR . '" align="absMiddle" /> ' . ERROR);
 
 				$ips = @explode(',', $data['ipaddr']);
 
@@ -319,8 +323,6 @@ switch($action){
 				$totalBandwidth = displayBytes($totalBandwidth);
 
 				$output .= '
-				<fieldset>
-					<legend><img src="images/icons/computer.png" border="0" alt="' . $result[0]['vps_name'] . '" title="' . $result[0]['vps_name'] . '" align="absMiddle" /> ' . $result[0]['vps_name'] . '</legend>
 					<div id="horizontal">
 						<ul>
 							<li>
@@ -403,8 +405,44 @@ switch($action){
 							</li>
 						</ul>
 					</div>
-					<div class="clear">&nbsp;</div>
+					<div class="clear">&nbsp;</div>';
+			}
+			else{
+				$output .= '
+					<div id="horizontal">
+						<ul>
+							<li>
+								<label>' . HOSTNAME . '</label>
+								-
+							</li>
+							<li>&nbsp;</li>
+							<li>
+								<label>' . STATUS . '</label>
+								<img src="images/icons/connect_error.png" border="0" width="16" height="16" alt="' . ERROR . '" title="' . ERROR . '" align="absMiddle" />' . ERROR . '
+							</li>
+							<li>&nbsp;</li>
+							<li>
+								<label>' . GROUP . '</label>
+								' . $groupName . '
+							</li>
+						</ul>
+					</div>
+					<div class="clear">&nbsp;</div>';
 
+					$output .= '
+					<div id="horizontal">
+						<ul>
+							<li>
+								<label>' . IP_ADDRESS . '</label>
+								-
+							</li>
+							<li>&nbsp;</li>
+						</ul>
+					</div>
+					<div class="clear">&nbsp;</div>';
+			}
+
+			$output .= '
 					<div id="horizontal">
 						<ul>
 							<li>
@@ -414,7 +452,6 @@ switch($action){
 						</ul>
 					</div>
 					<div class="clear">&nbsp;</div>
-
 					<div id="horizontal">
 						<ul>
 							<li>
@@ -424,11 +461,11 @@ switch($action){
 								if(isset($providerResult[0]['website_url'])){
 									$output .= '<div>';
 
-									if(preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i', $providerResult[0]['website_url'])){
+									if(preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\?/i', $providerResult[0]['website_url'])){
 										$output .= '<a href="' . $providerResult[0]['website_url'] . '" target="blank"><img src="images/icons/link.png" width="16" height="16" border="0" alt="' . WEBSITE . '" title="' . WEBSITE . '" align="absMiddle" /></a>';
 									}
 
-									if(preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i', $providerResult[0]['support_url'])){
+									if(preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\?/i', $providerResult[0]['support_url'])){
 										$output .= '&nbsp;&nbsp;<a href="' . $providerResult[0]['support_url'] . '" target="blank"><img src="images/icons/lifebuoy.png" width="16" height="16" border="0" alt="' . SUPPORT_PAGE . '" title="' . SUPPORT_PAGE . '" align="absMiddle" /></a>';
 									}
 
@@ -471,11 +508,6 @@ switch($action){
 					</p>
 					<div class="clear"></div>
 				</fieldset>';
-			}
-			else{
-				$output .= '<p class="red">' . ERROR_RETRIEVING_VPS_STATUS . '</p>
-				<p><input class="button" type="button" value="' . BACK . '" onclick="window.location.href=\'' . $referer . '\';" /></p>';
-			}
 		}
 		else{
 			$output .= '<p class="red">' . str_replace('%id%', htmlspecialchars($id), NO_VPS_IS_FOUND_WITH_ID) . '</p>';
@@ -904,6 +936,20 @@ function getStatus(){
 		}
 	);
 }
+
+function updateStatus(id){
+	$(id).update(\'<img src="images/icons/loading.gif" border="0" width="16" height="11" align="absMiddle" />\');
+
+	new Ajax.Request(encodeURI(\'?q=ajax.status&id=\' + id.replace(\'status_\', \'\') + \'\'),{
+		method:\'get\',
+		encoding: \'UTF-8\',
+		onSuccess: function(transport){
+			var response = transport.responseText;
+			$(id).update(response);
+		},
+		onFailure: function(){ alert(\'Connection error,\\nplease try again later.\') }
+	});
+}
 ';
 
 		if(!isset($_SESSION['last_check']) || (isset($_SESSION['last_check']) && $_SESSION['last_check'] < (time()-18000))){
@@ -925,6 +971,7 @@ function getStatus(){
 
 			$group = new csvHandler(TABLES . SVMC_CODE . 'group.tab', '|', 'group_id');
 			$groupResult = $group->select();
+			$groupResult = $group->sort($groupResult, 'group_name');
 
 			if($groupResult && count($groupResult) > 0){
 				foreach($groupResult as $r){
@@ -941,6 +988,7 @@ function getStatus(){
 
 			$provider = new csvHandler(TABLES . SVMC_CODE . 'provider.tab', '|', 'provider_id');
 			$providerResult = $provider->select();
+			$providerResult = $provider->sort($providerResult, 'provider_name');
 
 			if($providerResult && count($providerResult) > 0){
 				foreach($providerResult as $r){
@@ -964,16 +1012,63 @@ function getStatus(){
 			}
 
 			if(count($display) > 0){
+				$linkVPSName = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=name" class="sorting">' . VPS_NAME . '</a>';
+				$linkLocation = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=location" class="sorting">' . LOCATION . '</a>';
+				$linkGroup = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=group" class="sorting">' . GROUP . '</a>';
+				$linkProvider = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=provider" class="sorting">' . PROVIDER . '</a>';
+
+				$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+				switch($sort){
+					case 'name-desc':
+						$display = $vps->sort($display, 'vps_name', 'desc');
+						$linkVPSName = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=name" class="sorting desc">' . VPS_NAME . '</a>';
+					break;
+
+					case 'location':
+						$display = $vps->sort($display, 'location');
+						$linkLocation = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=location-desc" class="sorting asc">' . LOCATION . '</a>';
+					break;
+
+					case 'location-desc':
+						$display = $vps->sort($display, 'location', 'desc');
+						$linkLocation = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=location" class="sorting desc">' . LOCATION . '</a>';
+					break;
+
+					case 'group':
+						$display = $vps->sort($display, 'group_id');
+						$linkGroup = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=group-desc" class="sorting asc">' . GROUP . '</a>';
+					break;
+
+					case 'group-desc':
+						$display = $vps->sort($display, 'group_id', 'desc');
+						$linkGroup = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=group" class="sorting desc">' . GROUP . '</a>';
+					break;
+
+					case 'provider':
+						$display = $vps->sort($display, 'provider_id');
+						$linkProvider = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=provider-desc" class="sorting asc">' . PROVIDER . '</a>';
+					break;
+
+					case 'provider-desc':
+						$display = $vps->sort($display, 'provider_id', 'desc');
+						$linkProvider = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=provider" class="sorting desc">' . PROVIDER . '</a>';
+					break;
+
+					default:
+						$display = $vps->sort($display, 'vps_name');
+						$linkVPSName = '<a href="?q=vps' . (!empty($grp) ? '&grp=' . $grp : '') . (!empty($pvdr) ? '&pvdr=' . $pvdr : '') . '&sort=name-desc" class="sorting asc">' . VPS_NAME . '</a>';
+					break;
+				}
+
 				$output .= '<div class="table">
 					<div class="th">
-						<div class="td" style="width:3%;">&nbsp;</div>
-						<div class="td" style="width:20%;">' . VPS_NAME . '</div>
-						<div class="td" style="width:20%;">' . LOCATION . '</div>
-						<div class="td" style="width:10%;">' . GROUP . '</div>
-						<div class="td" style="width:11%;">' . PROVIDER . '</div>
-						<div class="td" style="width:3%;">&nbsp;</div>
-						<div class="td" style="width:8%;">' . ACTION . '</div>
-						<div class="td" style="width:8%;">&nbsp;</div>
+						<div class="td" style="width:16px;">&nbsp;</div>
+						<div class="td" style="width:155px;">' . $linkVPSName . '</div>
+						<div class="td" style="width:100px;">' . $linkLocation . '</div>
+						<div class="td" style="width:60px;">' . $linkGroup . '</div>
+						<div class="td" style="width:90px;">' . $linkProvider . '</div>
+						<div class="td" style="width:60px;">' . ACTION . '</div>
 						<div class="clear"></div>
 					</div>';
 
@@ -988,19 +1083,21 @@ function getStatus(){
 
 					$paymentStatus = (($r['due_date']-time()) < 0) ? '<img src="images/icons/coins_disable.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUED . '" title="' . SUBSCRIPTION_DUED . '" align="absMiddle" />' : (($r['due_date']-time()) < 604800 ? '<img src="images/icons/coins_error.png" width="16" height="16" border="0" alt="'. SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" title="' . SUBSCRIPTION_DUE_WITHIN_7_DAYS . '" align="absMiddle" />' : '');
 
-					$output .= '<div class="tr" style="cursor:pointer;" onclick="window.location.href=\'?action=view&id=' . $r['vps_id'] . '&ref=' . $pageLink . '\';">
-						<div class="td" style="width:3%;" id="status_' . $r['vps_id'] . '">' . $status . '</div>
-						<div class="td" style="width:20%;"><acronym title="' . $r['vps_name'] . '">' . $r['vps_name'] . '</acronym></div>
-						<div class="td" style="width:20%;"><acronym title="' . $r['location'] . '"><img src="images/flags/' . strtolower($r['country']) . '.png" border="0" align="absMiddle" /> ' . $r['location'] . '</acronym></div>
-						<div class="td" style="width:10%;"><acronym title="' . $groupName . '">' . $groupName . '</acronym></div>
-						<div class="td" style="width:10%;"><acronym title="' . $providerName . '">' . $providerName . '</acronym></div>
-						<div class="td" style="width:3%;">' . $paymentStatus . '</div>
-						<div class="td" style="width:10%;">
+					$tdAttr = ' onclick="window.location.href=\'?action=view&id=' . $r['vps_id'] . '&ref=' . $pageLink . '\';"';
+
+					$output .= '<div class="tr">
+						<div class="td" style="width:16px;cursor:pointer;" id="status_' . $r['vps_id'] . '" onclick="updateStatus(\'status_' . $r['vps_id'] . '\');">' . $status . '</div>
+						<div class="td" style="width:155px;cursor:pointer;"' . $tdAttr . '><acronym title="' . $r['vps_name'] . '">' . $r['vps_name'] . '</acronym></div>
+						<div class="td" style="width:100px;cursor:pointer;"' . $tdAttr . '><acronym title="' . $r['location'] . '"><img src="images/flags/' . strtolower($r['country']) . '.png" border="0" align="absMiddle" /> ' . $r['location'] . '</acronym></div>
+						<div class="td" style="width:60px;cursor:pointer;"' . $tdAttr . '><acronym title="' . $groupName . '">' . $groupName . '</acronym></div>
+						<div class="td" style="width:60px;cursor:pointer;"' . $tdAttr . '><acronym title="' . $providerName . '">' . $providerName . '</acronym></div>
+						<div class="td" style="width:16px;cursor:pointer;"' . $tdAttr . '>' . $paymentStatus . '</div>
+						<div class="td" style="width:60px;">
 							<a href="?action=boot&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/control_start.png" border="0" alt="' . BOOT . '" title="' . BOOT . '" align="absMiddle" /></a>
 							<a href="?action=shutdown&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/control_stop.png" border="0" alt="' . SHUTDOWN . '" title="' . SHUTDOWN . '" align="absMiddle" /></a>
 							<a href="?action=reboot&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/control_restart.png" border="0" alt="' . REBOOT . '" title="' . REBOOT . '" align="absMiddle" /></a>
 						</div>
-						<div class="td" style="width:8%;""><a href="?action=edit&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/page_white_edit.png" border="0" alt="' . EDIT . '" title="' . EDIT . '" align="absMiddle" /></a> <a href="?action=remove&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/bin.png" border="0" alt="' . REMOVE . '" title="' . REMOVE . '" align="absMiddle" /></a></div>
+						<div class="td" style="width:36px;""><a href="?action=edit&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/page_white_edit.png" border="0" alt="' . EDIT . '" title="' . EDIT . '" align="absMiddle" /></a> <a href="?action=remove&id=' . $r['vps_id'] . '&ref=' . $pageLink . '"><img src="images/icons/bin.png" border="0" alt="' . REMOVE . '" title="' . REMOVE . '" align="absMiddle" /></a></div>
 						<div class="clear"></div>
 					</div>';
 				}

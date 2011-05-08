@@ -1,3 +1,8 @@
+v2.3 (Mar, 2011)
+- Enabled single server status check when pressing the status icon.
+- Added sorting on table headers to sort VPS by name, group, location and provider.
+
+
 v2.2 (22 Feb, 2011)
 - Added disk space, memory, and bandwidth usage bar.
 - Added version.php to control version number changes.

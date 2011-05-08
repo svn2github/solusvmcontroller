@@ -177,21 +177,52 @@ switch($action){
 		if($result){
 			$vps = new csvHandler(TABLES . SVMC_CODE . 'vps.tab', '|', 'vps_id');
 
+			$index = 0;
+			foreach($result as $r){
+				$amount = $vps->select('group_id', $r['group_id']);
+				$result[$index]['total'] = count($amount);
+				$index++;
+			}
+
+			$linkGroupName = '<a href="?q=group&sort=name" class="sorting">' . GROUP_NAME . '</a>';
+			$linkTotal = '<a href="?q=group&sort=total" class="sorting">' . TOTAL_VPS . '</a>';
+
+			$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+			switch($sort){
+				case 'name-desc':
+					$result = $group->sort($result, 'group_name', 'desc');
+					$linkGroupName = '<a href="?q=group&sort=name" class="sorting desc">' . GROUP_NAME . '</a>';
+				break;
+
+				case 'total':
+					$result = $group->sort($result, 'total');
+					$linkTotal = '<a href="?q=group&sort=total-desc" class="sorting asc">' . TOTAL_VPS . '</a>';
+				break;
+
+				case 'total-desc':
+					$result = $group->sort($result, 'total', 'desc');
+					$linkTotal = '<a href="?q=group&sort=total" class="sorting desc">' . TOTAL_VPS . '</a>';
+				break;
+
+				default:
+					$result = $group->sort($result, 'group_name');
+					$linkGroupName = '<a href="?q=group&sort=name-desc" class="sorting asc">' . GROUP_NAME . '</a>';
+				break;
+			}
+
 			$output .= '<div class="table">
 				<div class="th">
-					<div class="td" style="width:54%;">' . GROUP_NAME . '</div>
-					<div class="td" style="width:28%;">' . TOTAL_VPS . '</div>
+					<div class="td" style="width:54%;">' . $linkGroupName . '</div>
+					<div class="td" style="width:28%;">' . $linkTotal . '</div>
 					<div class="td" style="width:8%;">&nbsp;</div>
 					<div class="clear"></div>
 				</div>';
 
 			foreach($result as $r){
-				$amount = $vps->select('group_id', $r['group_id']);
-				$total = count($amount);
-
 				$output .= '<div class="tr">
 					<div class="td" style="width:58%;">' . $r['group_name'] . '</div>
-					<div class="td" style="width:28%;">' . ($total>0 ? '<a href="?q=vps&grp=' . $r['group_id'] . '">' . $total . '</a>' : $total) . '</div>
+					<div class="td" style="width:28%;">' . ($r['total']>0 ? '<a href="?q=vps&grp=' . $r['group_id'] . '">' . $r['total'] . '</a>' : $r['total']) . '</div>
 					<div class="td" style="width:8%;""><a href="?q=group&action=edit&id=' . $r['group_id'] . '"><img src="images/icons/page_white_edit.png" border="0" alt="' . EDIT . '" title="' . EDIT . '" align="absMiddle" /></a> <a href="?q=group&action=remove&id=' . $r['group_id'] . '"><img src="images/icons/bin.png" border="0" alt="' . REMOVE . '" title="' . REMOVE . '" align="absMiddle" /></a></div>
 					<div class="clear"></div>
 				</div>';

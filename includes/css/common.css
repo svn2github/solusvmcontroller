@@ -48,6 +48,7 @@ select option{padding:1px 5px 1px 1px;}
 .table .th{background-color:#747474;color:#fff;font-weight:bold;border-bottom:1px dotted #EBEBEB;}
 .table .tr{height:30px;}
 .table .tr:nth-child(odd){background-color:#F3F3F3;}
+.table .th a{color:#fff;}
 .table .td{float:left;width:23%;padding-top:1%;padding-left:2%;overflow:hidden;height:22px;}
 
 fieldset{border:1px solid #D6D8DA;padding:8px;}
@@ -115,3 +116,10 @@ div.calendar tr.days td.otherDay{color:#bbb;}
 
 div.percentage{border:1px solid #ccc;width:350px;margin:2px 5px 2px 0;padding:1px;float:left;background:white;}
 div.percentage > div{background-color:#ACE97C;height:12px;}
+
+/* start of icon for sorting */
+.sorting{color:#fff;padding-right:18px;background:transparent url(/images/sorting.gif) no-repeat right top;cursor:pointer;}
+.sorting.asc{background-position:right -16px;}
+.sorting.desc{background-position:right -32px;}
+.sorting:visited{color:#fff;}
+/* end of icon for sorting */
