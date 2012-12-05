@@ -1,0 +1,12 @@
+vps_id|vps_name|notes|key|hash|protocol|host|port|country|location|price|currency|period|due_date|group_id|provider_id
+1|seikan.me (svmc)||4QOYU-0N2TH-09IQ8|d9f1194fc44a74f9eafa5c61bb2f80682fd23207|http|manage.buyvm.net||US|Fremont, CA|15|USD|annually|1316332800|0|1
+11|ipdb.info (s2)||8FCA2-LCGOR-HWAKL|44efa7e3203ee0be7e35f3b57ec108bcc557bbaf|https|srv01.123systems.net|5656|US|Chicago, IL|21.60|USD|annually|1314950400|0|10
+14|solusvmcontroller.com (s1)||FOKL7-VBLUZ-XHZKA|a5b0adf89b7fbf60fc3773c6c6494114887444e7|http|cp.bigbrainhost.com||US|Chicago, IL|0|USD|-|1321776000|3|9
+16|img4me.com (s1)||LF8L0-5G3KR-ORPHK|586ebee1b50566eefb0e3fcd2b191b681e4ea16c|https|manage.virpus.com||US|Kansas, MO|36|USD|annually|1318752000|0|11
+18|mail69.com (s1)||9L82I-I5KJK-TKO16|c269df2cef2a07dbd5618cf1e5262368c2f89629|https|solusvm.vpsunlimited.com|5656|US|Kansas City, MO|9.99|USD|monthly|1330070400|0|13
+19|dnsiseasy.com (ns3)||9QUFQ-JCWGZ-LYBWT|d6bb7a56c4ee8116edcc2d2136afeace3f301697|http|208.87.243.236|5353|US|Walnut, CA|15|USD|annually|1322121600|0|14
+20|domainiseasy.com (s1)||VLAHE-IXY70-P095P|e53bcaf4c9d166644d6174d64f263d1f229655f1|https|vpsmanager.quickweb.co.nz||US|Los Angeles, CA|35.88|USD|annually|1323676800|0|5
+21|dnsiseasy.com (ns2)||15TMG-USJ2F-8YFNY|9d952a68526ebef8cbd540f4ab0dbb287d0d7d3c|https|vpsmanager.quickweb.co.nz||US|Tempe, AZ|23.88|USD|annually|1322121600|0|5
+22|whoreadme.com (snap2)||4LWTU-ZT6ME-2W7CQ|e5284488ffa405748bd3953706d8ec8edeb981cb|https|srv01.123systems.net|5656|US|Dallas, TX|21.6|USD|annually|1298793600|0|10
+23|whoreadme.com (snap1)||BJPKJ-GM72G-STVC1|b5bb1e6340b97bd63aec41df61f0629ec50c68bd|https|vps.directspace.net||US|Los Angeles, CA|2|USD|monthly|1330070400|0|12
+24|ipdb.info (s3)||6M6OC-GS6EJ-YG3JI|bc95f9c2ba3275efc005e14b41afd151fe538e57|https|178.63.74.214|5656|DE|Frankfurt|12|USD|annually|1316678400|0|2
