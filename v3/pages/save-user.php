@@ -32,6 +32,8 @@ $emailAddress = $form->post('emailAddress', '', 'strtolower');
 $password = $form->post('password');
 $language = $form->post('language');
 
+if($userId == 1) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">Feature disabled in demo.</p>')));
+
 $languages = array();
 if($handle = opendir(LANGUAGES)){
 	while(false !== ($file = readdir($handle))){
@@ -64,7 +66,6 @@ if($userId){
 // For new user
 else{
 	if(!preg_match('/^[0-9a-zA-Z!@#\$%\^&*\(\)<>:;\-_=\+]{6,20}$/', $password)) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . PASSWORD_MUST_CONTAIN_ONLY_ALPHANUMERIC_CHARACTERS . '</p>')));
-	if($password != $confirmPassword) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . CONFIRM_PASSWORD_IS_NOT_MATCHED . '</p>')));
 }
 
 if(!in_array($language, array_keys($languages))) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . INVALID_LANGUAGE_SELECTED . '</p>')));
