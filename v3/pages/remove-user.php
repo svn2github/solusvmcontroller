@@ -44,7 +44,7 @@ $db->delete('vm', 'user_id=\'' . $db->escape($userId) . '\'');
 // Remove user created tags
 $tags = $db->select('tag', '*', 'user_id=\'' . $db->escape($userId) . '\'');
 
-if($db->affectedRow() > 0){
+if($db->affectedRows() > 0){
 	$db->delete('tag', 'user_id=\'' . $db->escape($userId) . '\'');
 
 	// Remove associated tags
