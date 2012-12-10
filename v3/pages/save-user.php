@@ -32,7 +32,7 @@ $emailAddress = $form->post('emailAddress', '', 'strtolower');
 $password = $form->post('password');
 $language = $form->post('language');
 
-if($userId == 1) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">Feature disabled in demo.</p>')));
+if(defined('DEMO') && $userId == 1) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">Feature disabled in demo.</p>')));
 
 $languages = array();
 if($handle = opendir(LANGUAGES)){

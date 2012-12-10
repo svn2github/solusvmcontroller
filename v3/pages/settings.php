@@ -92,10 +92,11 @@ if($form->isPost()){
 		if(isset($_SESSION['admin_id'])) $data['email_address'] = $emailAddress;
 		$data['language'] = $language;
 
-		$db->update('user', $data, 'user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
-
-		$_SESSION['name'] = $name;
-		$_SESSION['language'] = $language;
+		if(!defined('DEMO')){
+			$db->update('user', $data, 'user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
+			$_SESSION['name'] = $name;
+			$_SESSION['language'] = $language;
+		}
 
 		$status .= '<p class="green">' . SETTINGS_IS_UPDATED . '</p>';
 	}
