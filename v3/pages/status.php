@@ -55,23 +55,32 @@ foreach($rows as $row){
 		$status['vm-' . $vmId] = 'connect-error';
 		$_SESSION['status'] = json_encode($status);
 
-		die(json_encode(array('status'=>'connect-error', 'message'=>'<p class="red">' . CONNECTION_ERROR_WHEN_ACCESSING . '</p>', 'hostname'=>'', 'main_ip'=>'', 'ip_list'=>'', 'hdd_total'=>0, 'hdd_used'=>0, 'hdd_free'=>0, 'hdd_percent'=>0, 'mem_total'=>0, 'mem_used'=>0, 'meme_free'=>0, 'mem_percent'=>0, 'bw_total'=>0, 'bw_used'=>0, 'bw_free'=>0, 'bw_percent'=>0)));
+		die(json_encode(array('status'=>'connect-error', 'message'=>'<p class="red">' . CONNECTION_ERROR_WHEN_ACCESSING . '</p>', 'hostname'=>'', 'main_ip'=>'', 'ips'=>array(), 'hdd_total'=>0, 'hdd_used'=>0, 'hdd_free'=>0, 'hdd_percent'=>0, 'mem_total'=>0, 'mem_used'=>0, 'meme_free'=>0, 'mem_percent'=>0, 'bw_total'=>0, 'bw_used'=>0, 'bw_free'=>0, 'bw_percent'=>0)));
 	}
 
 	list($hddTotal, $hddUsed, $hddFree, $hddPercent) = explode(',', (strpos($result['hdd'], ',')) ? $result['hdd'] : '0,0,0,0');
 	list($memTotal, $memUsed, $memFree, $memPercent) = explode(',', (strpos($result['mem'], ',')) ? $result['mem'] : '0,0,0,0');
 	list($bwTotal, $bwUsed, $bwFree, $bwPercent) = explode(',', (strpos($result['bw'], ',')) ? $result['bw'] : '0,0,0,0');
 
+	$ipList = array();
+
+	$ips = explode(',', $result['ipaddr'] . ',');
+
+	foreach($ips as $ip){
+		if(!$ip) continue;
+		$ipList[] = $ip;
+	}
+
 	if($result['status'] != 'success'){
 		$status['vm-' . $vmId] = 'connect-error';
 		$_SESSION['status'] = json_encode($status);
 
-		die(json_encode(array('status'=>'connect-error', 'message'=>'<p class="red">' . CONNECTION_ERROR_WHEN_ACCESSING . '</p>', 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ip_list'=>$result['ipaddr'], 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>$bwPercent)));
+		die(json_encode(array('status'=>'connect-error', 'message'=>'<p class="red">' . CONNECTION_ERROR_WHEN_ACCESSING . '</p>', 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ips'=>$ipList, 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>$bwPercent)));
 	}
 
 	$status['vm-' . $vmId] = ($result['vmstat'] == 'online') ? 'online' : 'offline';
 	$_SESSION['status'] = json_encode($status);
 
-	die(json_encode(array('status'=>(($result['vmstat'] == 'online') ? 'online' : 'offline'), 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ip_list'=>$result['ipaddr'], 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>displayBytes($bwPercent))));
+	die(json_encode(array('status'=>(($result['vmstat'] == 'online') ? 'online' : 'offline'), 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ips'=>$ipList, 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>displayBytes($bwPercent))));
 }
 ?>

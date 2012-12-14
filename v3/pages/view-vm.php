@@ -113,6 +113,7 @@ $scripts = '
 		$("#vm-details").hide();
 		$(".progress").show();
 		$("#result").html("");
+		$("#ip").html("");
 
 		$.post("?q=status.json", {id: ' . $vm['vm_id'] . '}, function(data){
 			if(data.status != "connect-error"){
@@ -122,7 +123,14 @@ $scripts = '
 
 				$("#vm-status").html((data.status == "online") ? \'<img src="images/icons/online.png" class="icon"> ' . ONLINE . '\' : \'<img src="images/icons/offline.png" class="icon"> ' . OFFLINE . '\');
 				$("#hostname").html(data.hostname);
-				$("#ip-address").html(data.main_ip);
+				$("#main-address").html(data.main_ip + \' <img src="images/icons/plus.png" class="icon" />\');
+
+				$.each(data.ips, function(i, ip){
+					if(i == 0) $("#ip-address").html(ip + \' <img src="images/icons/minus.png" class="icon" />\');
+					else{
+						$("#ip").append(\'<div class="label">&nbsp;</div><div>\' + ip + \'</div>\');
+					}
+				});
 
 				$("#hdd-percent").css("width", data.hdd_percent + "%");
 				$("#hdd").html(data.hdd_used + " / " + data.hdd_total + " (" + data.hdd_percent + "%)");
@@ -209,10 +217,22 @@ include(INCLUDES . 'header.php');
 						<div class="label"><?php echo HOSTNAME; ?></div>
 						<div id="hostname">-</div>
 					</p>
-					<p>
-						<div class="label"><?php echo IP_ADDRESS; ?></div>
-						<div id="ip-address">-</div>
-					</p>
+
+					<div id="main-ip">
+						<p>
+							<div class="label"><?php echo IP_ADDRESS; ?></div>
+							<div id="main-address" onclick="$('#main-ip').hide();$('#ip-list').show();" style="cursor:pointer;">-</div>
+						</p>
+					</div>
+
+					<div id="ip-list" style="display:none;">
+						<p>
+							<div class="label"><?php echo IP_ADDRESS; ?></div>
+							<div id="ip-address" onclick="$('#ip-list').hide();$('#main-ip').show();" style="cursor:pointer;">-</div>
+							<span id="ip"></span>
+						</p>
+					</div>
+
 					<p>
 						<div class="label"><?php echo DISK_SPACE; ?></div>
 						<div>

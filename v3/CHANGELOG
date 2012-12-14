@@ -2,6 +2,7 @@ v3.1 (14 Dec, 2012)
 - Fixed some spelling issues
 - Added error handler
 - Added custom json_encode and json_decode function for PHP installation without json enabled
+- Showing all IP of the VM
 
 
 v3.0 (12 Dec, 2012)
