@@ -21,7 +21,7 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
-define('SVMC_VERSION', '3.0 Beta');
+define('SVMC_VERSION', '3.1 Beta');
 
 // Get selected language
 $_SESSION['language'] = (isset($_GET['language'])) ? $_GET['language'] : ((isset($_SESSION['language'])) ? $_SESSION['language'] : 'en-us');
@@ -46,7 +46,16 @@ switch($step){
 			$out .= '<p class="red">' . CHECK_PERMISSION_OF . ' ' . ROOT . 'configuration.php ' . str_repeat('.', 10) . ' [' . FAIL . ']</p>';
 		}
 
-		$out .= '<p>' . PERFORM_COMPABILITIES_CHECK . ' ...</p>';
+		$out .= '<p>' . PERFORM_COMPATIBILITIES_CHECK . ' ...</p>';
+
+		if(version_compare(PHP_VERSION, '5.2.0') >= 0){
+			$out .= '<p class="green">' . CHECK_PHP_VERSION . ' ' . str_repeat('.', 100) . ' [' . PASS . ']</p>';
+		}
+		else{
+			$error = 1;
+			$out .= '<p class="red">' . CHECK_PHP_VERSION . ' ' . str_repeat('.', 100) . ' [' . FAIL . ']</p>';
+		}
+
 
 		if(function_exists('mysql_connect')){
 			$out .= '<p class="green">' . CHECK_IF_MYSQL_INSTALLED . ' ' . str_repeat('.', 100) . ' [' . PASS . ']</p>';

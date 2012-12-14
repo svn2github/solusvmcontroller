@@ -30,10 +30,14 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('STEP_1_OF_3', '步骤1之3');
 	define('STEP_2_OF_3', '步骤2之3');
 	define('STEP_3_OF_3', '步骤3之3');
+
 	define('THANK_YOU_FOR_CHOOSING_SOLUSVMCONTROLLER', '谢谢您选用SolusVMController。请点击“下一步”开始安装。');
 	define('NEXT', '下一步');
 	define('PERFORM_PERMISSION_CHECKING', '进行权限检查');
 	define('CHECK_PERMISSION_OF', '查看权限：');
+	define('PERFORM_COMPABILITIES_CHECK', '进行相容性检查');
+	define('CHECK_PHP_VERSION', '检查是否安装了 PHP 5.2 或以上版本');
+	define('CHECK_IF_MYSQL_INSTALLED', '检查是否安装了 MySQL');
 	define('PASS', '通过');
 	define('FAIL', '失败');
 	define('RE_CHECK', '重新检查');

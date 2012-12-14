@@ -66,4 +66,70 @@ function random($length=16){
 function hashed($s){
 	return sha1(sha1($s . 'SfC97$zrAM@n'));
 }
+
+// JSON encode function for PHP < v5.2
+if(!function_exists('json_encode')){
+	function json_encode($data){
+		switch($type = gettype($data)){
+			case 'NULL':
+				return 'null';
+
+			case 'boolean':
+				return ($data ? 'true' : 'false');
+
+			case 'integer':
+			case 'double':
+			case 'float':
+				return $data;
+
+			case 'string':
+				return '"' . addslashes($data) . '"';
+
+            case 'array':
+				$index = 0;
+				$indexed = array();
+				$out = array();
+
+				foreach($data as $key=>$value){
+					$indexed[] = json_encode($value);
+					$out[] = json_encode($key) . ':' . json_encode($value);
+
+					if($index !== NULL && $index++ !== $key) $index = NULL;
+                }
+
+				return ($index !== NULL) ? ('[' . implode(',', $indexed) . ']') : ('{' . implode(',', $out) . '}');
+
+			default:
+				return '';
+		}
+	}
+}
+
+// JSON decode function for PHP < v5.2
+if(!function_exists('json_decode')){
+	function json_decode($json){
+		$obj = new stdClass();
+		$json = trim($json, '"');
+
+		if(substr($json, 0, 1) == '{'){
+			$rows = explode(',', substr($json, 1, -1));
+
+			foreach($rows as $row){
+				list($key, $value) = explode(':', $row);
+				$obj->{trim($key, '"')} = json_decode($value);
+			}
+			return $obj;
+		}
+		elseif(substr($json, 0, 1) == '['){
+			$cols = explode(',', substr($json, 1, -1));
+
+			foreach($cols as $col){
+				list($key, $value) = explode(':', $col);
+				$obj->{trim($key, '"')} = json_decode($value);
+			}
+			return $obj;
+		}
+		return $json;
+	}
+}
 ?>
