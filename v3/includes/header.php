@@ -56,6 +56,15 @@
 <head>
 
 <body>
+	<?php
+	if(isset($_SESSION['admin_id']) && isset($_SESSION['user_id']) && $_SESSION['admin_id'] != $_SESSION['user_id']){
+		echo '
+		<div class="user-access">
+			' . LOGGED_IN_AS . ' <b>' . $_SESSION['name'] . '</b>
+			<input class="button" type="button" value="' . REVOKE_ACCESS . '" onclick="window.location.href=\'?q=access&action=revoke\';" />
+		</div>';
+	}
+	?>
 	<div id="wrap">
 		<div id="header">
 			<span id="slogan"> <?php echo ALL_VMS_UNDER_ONE_ROOF; ?></span>
@@ -66,7 +75,7 @@
 					<li' . ($q == 'log-in' ? ' id="current"' : '') . '><a href="?q=log-in"><span>' . LOG_IN . '</span></a></li>';
 				}
 
-				if(isset($_SESSION['admin_id'])){
+				if(isset($_SESSION['admin_id']) && $_SESSION['admin_id'] == $_SESSION['user_id']){
 					echo '
 					<li' . ($q == 'user' ? ' id="current"' : '') . '><a href="?q=user"><span>' . USER . '</span></a></li>';
 				}

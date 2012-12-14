@@ -59,6 +59,8 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('ABOUT', '关于');
 	define('LOG_OUT', '登出');
 	define('WELCOME', '欢迎');
+	define('LOGGED_IN_AS', '已登录为');
+	define('REVOKE_ACCESS', '取消资格');
 
 
 /* 404.php */
@@ -94,6 +96,7 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('DISABLED', '停用');
 	define('GENERATE_PASSWORD', '产生密码');
 	define('VM_ASSIGNED', 'VM');
+	define('LOG_IN_TO_USER_ACCOUNT', '登录用户帐户');
 
 
 /* remove-user.php */

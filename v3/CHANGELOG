@@ -3,6 +3,7 @@ v3.1 (14 Dec, 2012)
 - Added error handler
 - Added custom json_encode and json_decode function for PHP installation without json enabled
 - Showing all IP of the VM
+- Administrator can now able to access users account
 
 
 v3.0 (12 Dec, 2012)

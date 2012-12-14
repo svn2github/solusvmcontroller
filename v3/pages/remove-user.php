@@ -21,7 +21,9 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
+
 if(!isset($_SESSION['admin_id'])) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . ACCESS_DENIED . '</p>')));
+if(!isset($_SESSION['admin_id']) || $_SESSION['admin_id'] != $_SESSION['user_id']) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . ACCESS_DENIED . '</p>')));
 
 $userId = $form->post('id');
 

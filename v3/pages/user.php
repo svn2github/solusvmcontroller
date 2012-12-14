@@ -24,7 +24,7 @@ defined('INDEX') or die('Access is denied.');
 
 if(!isset($_SESSION['user_id'])) die(header('Location: ?q=log-in'));
 
-if(!isset($_SESSION['admin_id'])) die(header('Location: ?q=404'));
+if(!isset($_SESSION['admin_id']) || $_SESSION['admin_id'] != $_SESSION['user_id']) die(header('Location: ?q=404'));
 
 $styles = '
 	#main{width:610px;float:right;}';
@@ -69,7 +69,7 @@ $scripts = '
 			}
 
 			$.each(data, function(i, item){
-				var li = $("<li />").html(\'<span></span><ul><li style="width:16px;"><img src="images/icons/user-\' + ((item.is_active == 1) ? \'active\' : \'disabled\') + \'.png" class="icon" /></li><li style="width:160px;" onclick="editUser(\' + item.id + \');">\' + item.name + \'</li><li style="width:200px;" onclick="editUser(\' + item.id + \');">\' + item.email_address + \'</li><li style="width:110px;" onclick="editUser(\' + item.id + \');">\' + $("#language option[value=\'" + item.language + "\']").text() + \'</li><li style="width:60px;" onclick="editUser(\' + item.id + \');"><span title="\' + item.total_vm + \' ' . VM_ASSIGNED . '" class="vm-total">\' + item.total_vm + \'</span></li><li style="width:18px;visibility:hidden;"><img src="images/icons/remove.png" class="icon" /></li></ul><div style="clear:both;"></div>\').attr("data-field", item.id);
+				var li = $("<li />").html(\'<span></span><ul><li style="width:16px;"><img src="images/icons/user-\' + ((item.is_active == 1) ? \'active\' : \'disabled\') + \'.png" class="icon" /></li><li style="width:140px;" onclick="editUser(\' + item.id + \');">\' + item.name + \'</li><li style="width:200px;" onclick="editUser(\' + item.id + \');">\' + item.email_address + \'</li><li style="width:100px;" onclick="editUser(\' + item.id + \');">\' + $("#language option[value=\'" + item.language + "\']").text() + \'</li><li style="width:60px;" onclick="editUser(\' + item.id + \');"><span title="\' + item.total_vm + \' ' . VM_ASSIGNED . '" class="vm-total">\' + item.total_vm + \'</span></li><li style="width:20px;"><a href="?q=access&id=\' + item.id + \'"><img src="images/icons/lock.png" class="icon" title="' . LOG_IN_TO_USER_ACCOUNT . '" alt="' . LOG_IN_TO_USER_ACCOUNT . '" /></a></li><li style="width:18px;visibility:hidden;"><img src="images/icons/remove.png" class="icon" /></li></ul><div style="clear:both;"></div>\').attr("data-field", item.id);
 
 				$("#user-list").append(li);
 

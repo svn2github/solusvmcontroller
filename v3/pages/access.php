@@ -21,21 +21,31 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
+if(!isset($_SESSION['admin_id'])) die('Access is denied.');
 
-if(!isset($_SESSION['admin_id'])) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . ACCESS_DENIED . '</p>')));
-if(!isset($_SESSION['admin_id']) || $_SESSION['admin_id'] != $_SESSION['user_id']) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . ACCESS_DENIED . '</p>')));
-
-$keyword = strtolower($form->post('keyword'));
+$userId = (isset($_GET['id'])) ? $_GET['id'] : '';
+$action = (isset($_GET['action'])) ? $_GET['action'] : '';
 
 $db->connect();
 
-$rows = $db->execute('SELECT *,(SELECT COUNT(*) FROM vm WHERE user_id=u.user_id) AS total_vm FROM user u WHERE ' . ((preg_match('/^\d+$/', $keyword)) ? 'user_id=\'' . $db->escape($keyword) . '\'' : 'LOWER(name) LIKE \'%' . $db->escape($keyword) . '%\' OR email_address LIKE \'%' . $keyword . '%\''));
-
-if($db->affectedRows() == 0) die(json_encode(array()));
-
-foreach($rows as $row){
-	$users[] = array('id'=>$row['user_id'], 'name'=>$row['name'], 'email_address'=>$row['email_address'], 'is_admin'=>$row['is_admin'], 'is_active'=>$row['is_active'], 'language'=>$row['language'], 'total_vm'=>$row['total_vm']);
+if($userId){
+	// Get user information by Id
+	$rows = $db->select('user', '*', 'user_id=\'' . $db->escape($userId) . '\'');
 }
 
-echo json_encode($users);
+if($action == 'revoke'){
+	// Get administrator information
+	$rows = $db->select('user', '*', 'user_id=\'' . $db->escape($_SESSION['admin_id']) . '\'');
+}
+
+if($db->affectedRows() == 0) die(header('Location: /404'));
+
+foreach($rows[0] as $key=>$value) $user[$key] = $value;
+
+$_SESSION['user_id'] = $user['user_id'];
+$_SESSION['name'] = $user['name'];
+$_SESSION['language'] = $user['language'];
+$_SESSION['status'] = json_encode(array('vm'=>''));
+
+die(header('Location: ?q=' . (($action) ? 'user' : 'vm')));
 ?>

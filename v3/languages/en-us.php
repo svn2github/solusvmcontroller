@@ -59,6 +59,8 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('ABOUT', 'About');
 	define('LOG_OUT', 'Log Out');
 	define('WELCOME', 'Welcome');
+	define('LOGGED_IN_AS', 'Logged in as');
+	define('REVOKE_ACCESS', 'Revoke Access');
 
 
 /* 404.php */
@@ -94,6 +96,7 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('DISABLED', 'Disabled');
 	define('GENERATE_PASSWORD', 'Generate Password');
 	define('VM_ASSIGNED', 'VM assigned');
+	define('LOG_IN_TO_USER_ACCOUNT', 'Log in to user account');
 
 
 /* remove-user.php */
