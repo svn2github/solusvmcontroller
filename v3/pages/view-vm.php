@@ -277,6 +277,11 @@ include(INCLUDES . 'header.php');
 						<div id="bw">-</div>
 					</p>
 
+					<p>
+						<div class="label"><?php echo TAGS; ?></div>
+						<div id="tag-list"><?php echo implode(', ', $presetTags); ?></div>
+					</p>
+
 					<p>&nbsp;</p>
 
 					<div class="loading" style="margin:0 0 0 300px;display:none;"></div>
