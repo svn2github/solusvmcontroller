@@ -36,7 +36,7 @@ class MySQL {
 	public function connect(){
 		$this->link = @mysql_connect($this->host, $this->user, $this->password) or die('MySQL->connect(): Unable to make a database connection.');
 
-        mysql_select_db($this->database, $this->link) or die('MySQL->connect(): Database error.');
+        @mysql_select_db($this->database, $this->link) or die('MySQL->connect(): Database error.');
 
         mysql_query('SET NAMES utf8', $this->link);
         mysql_query('SET CHARACTER SET utf8', $this->link);
