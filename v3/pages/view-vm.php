@@ -26,7 +26,7 @@ if(!isset($_SESSION['user_id'])) die(header('Location: ?q=log-in'));
 // Get VM information by Id
 $vmId = $form->get('id');
 $db->connect();
-$rows = $db->select('vm', '*', 'vm_id=\'' . $db->escape($vmId) . '\' AND user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
+$rows = $db->execute('SELECT * FROM vm m LEFT JOIN vz_type z ON m.vz_type_id=z.vz_type_id WHERE m.vm_id=\'' . $db->escape($vmId) . '\' AND m.user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
 
 // VM is not found
 if($db->affectedRows() != 1){
@@ -210,6 +210,10 @@ include(INCLUDES . 'header.php');
 						<div><?php echo $vm['label']; ?></div>
 					</p>
 					<p>
+						<div class="label"><?php echo VIRTUALIZATION; ?></div>
+						<div><?php echo ($vm['vz_name']) ? ('<img src="images/icons/' . $vm['vz_code'] . '.png" class="icon"> ' . $vm['vz_name']) : '&nbsp;'; ?></div>
+					</p>
+					<p>
 						<div class="label"><?php echo STATUS; ?></div>
 						<div id="vm-status">-</div>
 					</p>
@@ -305,6 +309,20 @@ include(INCLUDES . 'header.php');
 				<input type="hidden" name="vmId" id="vmId" value="<?php echo $vm['vm_id']; ?>" />
 				<label for="label"><?php echo LABEL; ?></label>
 				<input type="text" name="label" id="label" value="<?php echo $vm['label']; ?>" maxlength="100" class="text" style="width:355px;" /> <span class="red">*</span>
+
+				<label for="vzTypeId"><?php echo VIRTUALIZATION; ?></label>
+				<select name="vzTypeId" id="vzTypeId" class="vz">
+					<option value="0"> </option>
+					<?php
+					$vzTypes = $db->select('vz_type');
+
+					if($db->affectedRows() > 0){
+						foreach($vzTypes as $vzType){
+							echo '<option value="' . $vzType['vz_type_id'] . '" class="' . $vzType['vz_code'] . '"' . (($vm['vz_type_id'] == $vzType['vz_type_id']) ? ' selected' : '') . '> ' . $vzType['vz_name'] . '</option>';
+						}
+					}
+					?>
+				</select> <span class="red">*</span>
 
 				<ul class="same-row">
 					<li><label for="host"><?php echo HOST; ?></label></li>

@@ -203,6 +203,20 @@ include(INCLUDES . 'header.php');
 				<label for="label"><?php echo LABEL; ?></label>
 				<input type="text" name="label" id="label" value="" maxlength="100" class="text" style="width:355px;" /> <span class="red">*</span>
 
+				<label for="vzTypeId"><?php echo VIRTUALIZATION; ?></label>
+				<select name="vzTypeId" id="vzTypeId" class="vz">
+					<option value="0"> </option>
+					<?php
+					$vzTypes = $db->select('vz_type');
+
+					if($db->affectedRows() > 0){
+						foreach($vzTypes as $vzType){
+							echo '<option value="' . $vzType['vz_type_id'] . '" class="' . $vzType['vz_code'] . '"> ' . $vzType['vz_name'] . '</option>';
+						}
+					}
+					?>
+				</select> <span class="red">*</span>
+
 				<ul class="same-row">
 					<li><label for="host"><?php echo HOST; ?></label></li>
 					<li style="width:276px;">&nbsp;</li>
