@@ -96,6 +96,6 @@
 
 		<div id="header-logo">
 			<div id="logo"><a href="?q=vm"><img src="images/svmcontroller_logo.png" width="85" height="85" border="0" /></a></div>
-			<div id="title">SolusVM<span class="red">Controller</span><span style="font-size:10px;color:#666666;"><?php echo SVMC_VERSION; ?></span></div>
+			<div id="title">SolusVM<span class="red">Controller</span><span style="font-size:10px;color:#666666;"><?php echo ((defined('SVMC_VERSION')) ? SVMC_VERSION : $version); ?></span></div>
 			<?php if(isset($_SESSION['name'])) echo '<div style="float:right;margin-top:10px;">' . WELCOME . ', ' . $_SESSION['name'] . '! | <a href="?q=log-out">' . LOG_OUT . '</a></div>'; ?>
 		</div>

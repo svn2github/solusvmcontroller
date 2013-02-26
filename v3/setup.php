@@ -21,7 +21,8 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
-define('SVMC_VERSION', '3.2 Beta');
+
+$version = '3.2 Beta';
 
 // Get selected language
 $_SESSION['language'] = (isset($_GET['language'])) ? $_GET['language'] : ((isset($_SESSION['language'])) ? $_SESSION['language'] : 'en-us');
@@ -271,7 +272,7 @@ ALTER TABLE `user`
 
 		$configurations = '<?php
 define(\'INSTALLED\', 1);
-define(\'SVMC_VERSION\', \'' . SVMC_VERSION . '\');
+define(\'SVMC_VERSION\', \'' . $version . '\');
 
 $config[\'dbHost\'] = \'' . $data->dbHost . '\';
 $config[\'dbUser\'] = \'' . $data->dbUser . '\';
@@ -285,7 +286,7 @@ $config[\'language\'] = \'' . $_SESSION['language'] . '\';
 		if(defined('UPGRADE')){
 			$out .= '<h1>' . UPGRADE_COMPLETED . '</h1>
 
-			<p>' . str_replace('%version%', SVMC_VERSION, SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED) . '</p>
+			<p>' . str_replace('%version%', $version, SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED) . '</p>
 
 			<p><input class="button" type="button" value="' . FINISH . '" onclick="window.location.href=\'?q=log-in\';" /></p>';
 		}
@@ -323,7 +324,7 @@ $config[\'language\'] = \'' . $_SESSION['language'] . '\';
 		}
 		$options .= '</select>';
 
-		$out .= '<h1>' . SOLUSVMCONTROLLER_INSTALLATION . ((defined('UPGRADE')) ? ' (' . SYSTEM_UPGRADE . ': ' . SVMC_VERSION . ')' : '') . '</h1>
+		$out .= '<h1>' . SOLUSVMCONTROLLER_INSTALLATION . ((defined('UPGRADE')) ? ' (' . SYSTEM_UPGRADE . ': ' . $version . ')' : '') . '</h1>
 		<div align="right">
 			<b>' . LANGUAGE . '</b>
 			' . $options . '
