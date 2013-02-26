@@ -85,8 +85,6 @@ if(file_exists(ROOT . 'setup.php')){
 
 $db = new MySQL($config['dbHost'], $config['dbUser'], $config['dbPass'], $config['dbName']);
 
-$db->enableLog('debug.txt');
-
 // Include language file
 $languageCode = (isset($_SESSION['language'])) ? $_SESSION['language'] : $config['language'];
 if(!file_exists(LANGUAGES . $languageCode . '.php')) die('Language file not found.');
