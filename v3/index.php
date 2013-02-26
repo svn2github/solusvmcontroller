@@ -71,7 +71,7 @@ if(file_exists(ROOT . 'setup.php')){
 		// Get setup version
 		$setup = file_get_contents(ROOT . 'setup.php');
 
-		if(preg_match('/VERSION\', \'([^\']+)/', $setup, $matches)){
+		if(preg_match('/version = \'([^\']+)/', $setup, $matches)){
 			if($matches[1] > SVMC_VERSION){
 				define('UPGRADE', 1);
 
