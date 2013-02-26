@@ -301,9 +301,9 @@ include(INCLUDES . 'header.php');
 
 					<p>&nbsp;</p>
 
-					<div class="loading" style="margin:0 0 0 300px;display:none;"></div>
-
 					<p>&nbsp;</p>
+
+					<div class="loading" style="margin:0 0 0 300px;display:none;"></div>
 
 					<p align="center">
 						<button class="boot">Boot</button>
