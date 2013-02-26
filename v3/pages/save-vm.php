@@ -25,7 +25,7 @@ if(!isset($_SESSION['user_id'])) die(json_encode(array('status'=>'error', 'messa
 
 $vmId = $form->post('vmId');
 $label = $form->post('label');
-$vzTypeId = $form->post('vzTypeId');
+$vzId = $form->post('vzId');
 $isHttps = $form->post('isHttps');
 $host = $form->post('host', '', 'strtolower');
 $port = $form->post('port');
@@ -37,7 +37,7 @@ if(empty($label)) die(json_encode(array('status'=>'error', 'message'=>'<p class=
 
 if(strlen($label) > 100) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . LABEL_SHOULD_NOT_LONGER_THAN_100_CHARACTERS . '</p>')));
 
-if($vzTypeId == 0) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . PLEASE_SELECT_A_VIRTUALIZATION . '</p>')));
+if($vzId == 0) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . PLEASE_SELECT_A_VIRTUALIZATION . '</p>')));
 
 if(!preg_match('/^([a-z0-9\-]+\.)?[a-z0-9\-]+\.[a-z]{2,4}|[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $host)) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . YOU_MUST_PROVIDE_A_VALID_HOST . '</p>')));
 
@@ -49,10 +49,8 @@ if(!preg_match('/^[a-f0-9]{40}$/', $hash)) die(json_encode(array('status'=>'erro
 
 $db->connect();
 
-// Make sure VZ type is valid
-$db->select('vz_type', '*', 'vz_type_id=\'' . $db->escape($vzTypeId) . '\'');
-
-if($db->affectedRows() == 0) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . INVALID_VIRTUALIZATION_SELECTED . '</p>')));
+// Make sure virtualization is valid
+if(!getVz($vzId)) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . INVALID_VIRTUALIZATION_SELECTED . '</p>')));
 
 // Check if key exists
 $db->select('vm', '*', 'key=\'' . $db->escape($key) . '\' AND user_id=\'' . $db->escape($_SESSION['user_id']) . '\'' . (($vmId) ? ' AND vm_id != \'' . $db->escape($vmId) . '\'' : ''));
@@ -75,7 +73,7 @@ if($result['status'] != 'success') die(json_encode(array('status'=>'error', 'mes
 
 $data = array(
 	'label'=>$label,
-	'vz_type_id'=>$vzTypeId,
+	'vz_id'=>$vzId,
 	'is_https'=>($isHttps) ? 1 : 0,
 	'host'=>$host,
 	'port'=>((empty($port)) ? (($isHttps) ? '443' : '80') : $port),

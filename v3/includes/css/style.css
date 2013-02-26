@@ -155,5 +155,17 @@ div.percentage > div{background-color:#ACE97C;height:12px;}
 
 .vz option{padding:0 0 2px 20px;margin:2px;}
 .vz option.ovz{background:url(../../images/icons/ovz.png) no-repeat;}
-.vz option.xen{background:url(../../images/icons/xen.png) no-repeat;}
+.vz option.xen-pv,.vz option.xen-hvm{background:url(../../images/icons/xen.png) no-repeat;}
 .vz option.kvm{background:url(../../images/icons/kvm.png) no-repeat;}
+
+span#ovz{background:#006600;color:#fff;padding:2px 5px 4px 5px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+span#kvm{background:#fff;color:#4d4d4d;padding:2px 5px 4px 5px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;font-weight:bold;}
+span#xen-pv,span#xen-hvm{background:#d8d8d8;color:#000;padding:2px 5px 4px 5px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+
+span.ovz{font-size:9px;background:#006600;color:#fff;padding:0 1px 1px 1px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+span.xen{font-size:9px;background:#3b3b3b;color:#fff;padding:0 1px 1px 1px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+span.kvm{font-size:9px;background:#c0c0c0;color:#000;padding:0 1px 1px 1px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}

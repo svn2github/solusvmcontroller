@@ -65,7 +65,7 @@ $scripts = '
 			}
 
 			$.each(data, function(i, item){
-				var li = $("<li />").html(\'<div>\' + item.tag_name + \'</div> <input type="text" value="\' + item.tag_name + \'" maxlength="100" /> <span title="\' + ("' . VM_TAGGED_WITH . '").replace("%total%", item.total).replace("%name%", item.tag_name) + \'">\' + item.total + \'</span> <a href="javascript:;">x</a>\');
+				var li = $("<li />").html(\'<div>\' + item.tag_name + \'</div> <input type="text" value="\' + item.tag_name + \'" maxlength="100" /> <span title="\' + ("' . VM_TAGGED_WITH . '").replace("%total%", item.total).replace("%name%", item.tag_name) + \'" onclick="window.location.href=\\\'?q=vm&search=\' + escape(\'tag:\' + item.tag_name) + \'\\\';" style="cursor:pointer;">\' + item.total + \'</span> <a href="javascript:;">x</a>\');
 
 				$("#tag-list").append(li);
 

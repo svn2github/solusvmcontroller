@@ -132,4 +132,33 @@ if(!function_exists('json_decode')){
 		return $json;
 	}
 }
+
+function getVz($mode=''){
+	$_vz = array(
+		array('id'=>1, 'code'=>'ovz', 'name'=>'OpenVZ'),
+		array('id'=>2, 'code'=>'xen-pv', 'name'=>'XEN PV'),
+		array('id'=>3, 'code'=>'xen-hvm', 'name'=>'XEN HVM'),
+		array('id'=>4, 'code'=>'kvm', 'name'=>'KVM'),
+	);
+
+	// Get virtualization by ID
+	if(preg_match('/^[0-9]+$/', $mode)){
+		foreach($_vz as $vz){
+			if($vz['id'] == $mode) return $vz;
+		}
+	}
+
+	// Get virtualization by code
+	else if(preg_match('/^[a-z\-]+$/', $mode)){
+		foreach($_vz as $vz){
+			if($vz['code'] == $mode) return $vz;
+		}
+	}
+
+	// List all virtualization
+	else{
+		return $_vz;
+	}
+	return false;
+}
 ?>

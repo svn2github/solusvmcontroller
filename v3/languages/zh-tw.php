@@ -48,6 +48,10 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('INSTALLTION_COMPLETED', '安裝完成！');
 	define('YOU_CAN_NOW_LOGIN', '您現在將可以以用戶 <b>%emailAddress%</b> 以及密碼 <b>%password%</b> 登錄系統。');
 	define('FINISH', '完成');
+	define('SAVE', '保存');
+	define('SYSTEM_UPGRADE', '系統升級');
+	define('UPGRADE_COMPLETED', '升級完畢');
+	define('SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED', 'SolusVM Controller 已經成功升級至 <b>%version%</b> 版本。');
 
 
 /* header.php */
@@ -88,7 +92,6 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('ADD_USER', '新增用戶');
 	define('EDIT_USER', '編輯用戶');
 	define('NEW_USER', '新用戶');
-	define('SAVE_USER', '保存用戶');
 	define('ACCESS_DENIED', '訪問被拒絕。');
 	define('ACCESS_USER_ACCOUNT', '接管用戶帳戶');
 	define('NOT_ABLE_TO_EDIT_SELECTED_USER', '無法編輯用戶。');
@@ -116,6 +119,7 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('NEW_VM', '新VM');
 	define('SAVING', '保存中');
 	define('LABEL', '名字');
+	define('VIRTUALIZATION', '虛擬環境');
 	define('HOST', '主機');
 	define('PORT', '端口');
 	define('API_KEY', 'API Key');
@@ -125,6 +129,7 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('BOOT', '啓動');
 	define('REBOOT', '重啓');
 	define('SHUTDOWN', '關機');
+	define('SORT_BY', '排序方式');
 
 /* view-vm.php */
 	define('EDIT_VM', '編輯主機');
@@ -146,6 +151,8 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('SESSION_EXPIRED', '請再重新登錄。');
 	define('PLEASE_PROVIDE_A_LABEL', '請提供VM名字。');
 	define('LABEL_SHOULD_NOT_LONGER_THAN_100_CHARACTERS', 'VM名字不能超過100字節。');
+	define('PLEASE_SELECT_A_VIRTUALIZATION', '請選擇虛擬環境。');
+	define('INVALID_VIRTUALIZATION_SELECTED', '不合法的虛擬環境。');
 	define('A_VALID_API_KEY_SHOULD_LOOK_LIKE', '正確的的API key是“ABCDE-FGHIJ-KLMNO”格式的。');
 	define('A_VALID_API_HASH_SHOULD_BE_40_CHARACTERS_IN_LENGTH', '正確的API hash應有40字節的長度。');
 	define('YOU_MUST_PROVIDE_A_VALID_HOST', '請提供有效的主機地址。');

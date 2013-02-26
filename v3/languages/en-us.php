@@ -48,6 +48,10 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('INSTALLTION_COMPLETED', 'Installtion completed!');
 	define('YOU_CAN_NOW_LOG_IN', 'You can now log-in with username <b>%emailAddress%</b> and password <b>%password%</b>.');
 	define('FINISH', 'Finish');
+	define('SAVE', 'Save');
+	define('SYSTEM_UPGRADE', 'System Upgrade');
+	define('UPGRADE_COMPLETED', 'Upgrade Completed');
+	define('SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED', 'SolusVM Controller has been upgraded to version <b>%version%</b>.');
 
 
 /* header.php */
@@ -88,7 +92,6 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('ADD_USER', 'Add User');
 	define('EDIT_USER', 'Edit User');
 	define('NEW_USER', 'New User');
-	define('SAVE_USER', 'Save User');
 	define('ACCESS_DENIED', 'Access denied.');
 	define('ACCESS_USER_ACCOUNT', 'Access user account.');
 	define('NOT_ABLE_TO_EDIT_SELECTED_USER', 'Not able to edit selected user.');
@@ -125,7 +128,8 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('THERE_ARE_NO_RESULTS_FOUND', 'There are no results found.');
 	define('BOOT', 'Boot');
 	define('REBOOT', 'Reboot');
-	define('SHUTDOWN', 'shutdown');
+	define('SHUTDOWN', 'Shutdown');
+	define('SORT_BY', 'Sort By');
 
 /* view-vm.php */
 	define('EDIT_VM', 'Edit VM');

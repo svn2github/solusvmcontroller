@@ -23,10 +23,12 @@
 defined('INDEX') or die('Access is denied.');
 if(!isset($_SESSION['user_id'])) die(header('Location: ?q=log-in'));
 
+$referer = (isset($_GET['ref'])) ? $_GET['ref'] : '?q=vm';
+
 // Get VM information by Id
 $vmId = $form->get('id');
 $db->connect();
-$rows = $db->execute('SELECT * FROM vm m LEFT JOIN vz_type z ON m.vz_type_id=z.vz_type_id WHERE m.vm_id=\'' . $db->escape($vmId) . '\' AND m.user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
+$rows = $db->execute('SELECT * FROM vm WHERE vm_id=\'' . $db->escape($vmId) . '\' AND user_id=\'' . $db->escape($_SESSION['user_id']) . '\'');
 
 // VM is not found
 if($db->affectedRows() != 1){
@@ -49,6 +51,9 @@ if($db->affectedRows() != 1){
 foreach($rows[0] as $key=>$value){
 	$vm[$key] = $value;
 }
+
+// Get virtualization
+$vz = getVz($vm['vz_id']);
 
 // Get available tags
 $tags = array();
@@ -165,7 +170,7 @@ $scripts = '
 
 		$.post("?q=save-vm.json", $("#dialog form").serialize(), function(data){
 			if(data.status == "ok"){
-				window.location.href="?q=view-vm&id=' . $vm['vm_id'] . '";
+				window.location.href="?q=view-vm&id=' . $vm['vm_id'] . '&ref=' . rawurlencode($referer) . '";
 				return;
 			}
 
@@ -199,7 +204,7 @@ $sidebarItems = array(
 include(INCLUDES . 'header.php');
 ?>
 	<div id="main">
-		<h1><?php echo '<a href="?q=vm">' . VM_LIST . '</a> &raquo; ' . htmlspecialchars($vm['label']); ?></h1>
+		<h1><?php echo '<a href="' . $referer . '">' . VM_LIST . '</a> &raquo; ' . htmlspecialchars($vm['label']); ?></h1>
 		<p>
 			<div id="result"><?php if(isset($_SESSION['result'])){ echo $_SESSION['result']; unset($_SESSION['result']); } ?></div>
 			<div class="progress"></div>
@@ -211,7 +216,7 @@ include(INCLUDES . 'header.php');
 					</p>
 					<p>
 						<div class="label"><?php echo VIRTUALIZATION; ?></div>
-						<div><?php echo ($vm['vz_name']) ? ('<img src="images/icons/' . $vm['vz_code'] . '.png" class="icon"> ' . $vm['vz_name']) : '&nbsp;'; ?></div>
+						<div><?php echo '<span id="' . $vz['code'] . '">' . $vz['name'] . '</span>'; ?></div>
 					</p>
 					<p>
 						<div class="label"><?php echo STATUS; ?></div>
@@ -283,12 +288,22 @@ include(INCLUDES . 'header.php');
 
 					<p>
 						<div class="label"><?php echo TAGS; ?></div>
-						<div id="tag-list"><?php echo implode(', ', $presetTags); ?></div>
+						<ul id="tag-list">
+							<?php
+							if(count($presetTags) > 0){
+								foreach($presetTags as $tagName){
+									echo '<li onclick="window.location.href=\'?q=vm&search=' . rawurlencode('tag:' . $tagName) . '\';" style="cursor:pointer;">' . $tagName . '</li>';
+								}
+							}
+							?>
+						</ul>
 					</p>
 
 					<p>&nbsp;</p>
 
 					<div class="loading" style="margin:0 0 0 300px;display:none;"></div>
+
+					<p>&nbsp;</p>
 
 					<p align="center">
 						<button class="boot">Boot</button>
@@ -310,16 +325,14 @@ include(INCLUDES . 'header.php');
 				<label for="label"><?php echo LABEL; ?></label>
 				<input type="text" name="label" id="label" value="<?php echo $vm['label']; ?>" maxlength="100" class="text" style="width:355px;" /> <span class="red">*</span>
 
-				<label for="vzTypeId"><?php echo VIRTUALIZATION; ?></label>
-				<select name="vzTypeId" id="vzTypeId" class="vz">
+				<label for="vzId"><?php echo VIRTUALIZATION; ?></label>
+				<select name="vzId" id="vzId" class="vz">
 					<option value="0"> </option>
 					<?php
-					$vzTypes = $db->select('vz_type');
+					$vzTypes = getVz();
 
-					if($db->affectedRows() > 0){
-						foreach($vzTypes as $vzType){
-							echo '<option value="' . $vzType['vz_type_id'] . '" class="' . $vzType['vz_code'] . '"' . (($vm['vz_type_id'] == $vzType['vz_type_id']) ? ' selected' : '') . '> ' . $vzType['vz_name'] . '</option>';
-						}
+					foreach($vzTypes as $vzType){
+						echo '<option value="' . $vzType['id'] . '" class="' . $vzType['code'] . '"' . (($vm['vz_id'] == $vzType['id']) ? ' selected' : '') . '> ' . $vzType['name'] . '</option>';
 					}
 					?>
 				</select> <span class="red">*</span>
@@ -360,7 +373,7 @@ include(INCLUDES . 'header.php');
 			</form>
 
 			<p align="center">
-				<input class="button" type="button" value="<?php echo EDIT_VM; ?>" onclick="saveVM();" />
+				<input class="button" type="button" value="<?php echo SAVE; ?>" onclick="saveVM();" />
 			</p>
 		</div>
 	</div>

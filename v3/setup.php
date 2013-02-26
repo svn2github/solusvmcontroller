@@ -21,7 +21,7 @@
 ###########################################################################
 
 defined('INDEX') or die('Access is denied.');
-define('SVMC_VERSION', '3.1 Beta');
+define('VERSION', '3.2 Beta');
 
 // Get selected language
 $_SESSION['language'] = (isset($_GET['language'])) ? $_GET['language'] : ((isset($_SESSION['language'])) ? $_SESSION['language'] : 'en-us');
@@ -82,10 +82,10 @@ switch($step){
 		if($_SESSION['setup_step'] != 1) die(header('Location: ?step=1'));
 
 		$status = '';
-		$dbHost = $form->post('dbHost', '', 'strtolower');
-		$dbUser = $form->post('dbUser');
-		$dbPass = $form->post('dbPass');
-		$dbName = $form->post('dbName');
+		$dbHost = $form->post('dbHost', ((isset($config['dbHost'])) ? $config['dbHost'] : ''), 'strtolower');
+		$dbUser = $form->post('dbUser', ((isset($config['dbUser'])) ? $config['dbUser'] : ''));
+		$dbPass = $form->post('dbPass', ((isset($config['dbPass'])) ? $config['dbPass'] : ''));
+		$dbName = $form->post('dbName', ((isset($config['dbName'])) ? $config['dbName'] : ''));
 
 		if($form->isPost()){
 			if(!@mysql_connect($dbHost, $dbUser, $dbPass)){
@@ -97,9 +97,14 @@ switch($step){
 			}
 
 			if(!$status){
-				$_SESSION['setup_step'] = 2;
 				$_SESSION['db'] = json_encode(array('dbHost'=>$dbHost, 'dbUser'=>$dbUser, 'dbPass'=>$dbPass, 'dbName'=>$dbName));
 
+				if(defined('UPGRADE')){
+					$_SESSION['setup_step'] = 3;
+					die(header('Location: ?step=4'));
+				}
+
+				$_SESSION['setup_step'] = 2;
 				die(header('Location: ?step=3'));
 			}
 		}
@@ -219,13 +224,17 @@ CREATE TABLE `user` (
 	`language` CHAR(5) NOT NULL DEFAULT \'en-us\' COLLATE \'utf8_bin\',
 	`date_created` DATETIME NOT NULL,
 	PRIMARY KEY (`user_id`),
-	INDEX `idx_email_address` (`email_address`)
+	INDEX `idx_email_address` (`email_address`),
+	INDEX `idx_name` (`name`),
+	INDEX `idx_language` (`language`),
+	INDEX `idx_date_created` (`date_created`)
 )
 COLLATE=\'utf8_bin\'
 ENGINE=MyISAM;
 
 CREATE TABLE `vm` (
 	`vm_id` INT(10) NOT NULL AUTO_INCREMENT,
+	`vz_id` INT(10) NOT NULL DEFAULT \'0\',
 	`label` VARCHAR(100) NOT NULL COLLATE \'utf8_bin\',
 	`is_https` CHAR(1) NOT NULL DEFAULT \'1\' COLLATE \'utf8_bin\',
 	`host` VARCHAR(255) NOT NULL COLLATE \'utf8_bin\',
@@ -236,19 +245,31 @@ CREATE TABLE `vm` (
 	PRIMARY KEY (`vm_id`),
 	INDEX `idx_user_id` (`user_id`),
 	INDEX `idx_label` (`label`),
-	INDEX `idx_key` (`key`)
+	INDEX `idx_key` (`key`),
+	INDEX `idx_vz_id` (`vz_id`)
 )
 COLLATE=\'utf8_bin\'
 ENGINE=MyISAM;';
 
+		if(defined('UPGRADE')){
+			$sql = 'ALTER TABLE `vm`
+	ADD COLUMN `vz_id` INT(10) NOT NULL DEFAULT \'0\' AFTER `vm_id`,
+	ADD INDEX `idx_vz_id` (`vz_id`);
+
+ALTER TABLE `user`
+	ADD INDEX `idx_name` (`name`),
+	ADD INDEX `idx_language` (`language`),
+	ADD INDEX `idx_date_created` (`date_created`);';
+		}
+
 		$db->executeSQL($sql);
 
 		// Create administrator
-		$db->insert('user', array('is_admin'=>1, 'is_active'=>1, 'name'=>$_SESSION['name'], 'email_address'=>$_SESSION['email_address'], 'password'=>hashed($_SESSION['password']), 'language'=>$_SESSION['language'], 'date_created'=>date('Y-m-d H:i:s')));
+		if(!defined('UPGRADE')) $db->insert('user', array('is_admin'=>1, 'is_active'=>1, 'name'=>$_SESSION['name'], 'email_address'=>$_SESSION['email_address'], 'password'=>hashed($_SESSION['password']), 'language'=>$_SESSION['language'], 'date_created'=>date('Y-m-d H:i:s')));
 
 		$configurations = '<?php
 define(\'INSTALLED\', 1);
-define(\'SVMC_VERSION\', \'' . SVMC_VERSION . '\');
+define(\'SVMC_VERSION\', \'' . VERSION . '\');
 
 $config[\'dbHost\'] = \'' . $data->dbHost . '\';
 $config[\'dbUser\'] = \'' . $data->dbUser . '\';
@@ -259,11 +280,20 @@ $config[\'language\'] = \'' . $_SESSION['language'] . '\';
 
 		file_put_contents(ROOT . 'configuration.php', $configurations);
 
-		$out .= '<h1>' . INSTALLTION_COMPLETED . '</h1>
+		if(defined('UPGRADE')){
+			$out .= '<h1>' . UPGRADE_COMPLETED . '</h1>
 
-		<p>' . str_replace(array('%emailAddress%', '%password%'), array($_SESSION['email_address'], $_SESSION['password']), YOU_CAN_NOW_LOG_IN) . '</p>
+			<p>' . str_replace('%version%', VERSION, SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED) . '</p>
 
-		<p><input class="button" type="button" value="' . FINISH . '" onclick="window.location.href=\'?q=log-in\';" /></p>';
+			<p><input class="button" type="button" value="' . FINISH . '" onclick="window.location.href=\'?q=log-in\';" /></p>';
+		}
+		else{
+			$out .= '<h1>' . INSTALLTION_COMPLETED . '</h1>
+
+			<p>' . str_replace(array('%emailAddress%', '%password%'), array($_SESSION['email_address'], $_SESSION['password']), YOU_CAN_NOW_LOG_IN) . '</p>
+
+			<p><input class="button" type="button" value="' . FINISH . '" onclick="window.location.href=\'?q=log-in\';" /></p>';
+		}
 	break;
 
 	default:
@@ -291,7 +321,7 @@ $config[\'language\'] = \'' . $_SESSION['language'] . '\';
 		}
 		$options .= '</select>';
 
-		$out .= '<h1>' . SOLUSVMCONTROLLER_INSTALLATION . '</h1>
+		$out .= '<h1>' . SOLUSVMCONTROLLER_INSTALLATION . ((defined('UPGRADE')) ? ' (' . SYSTEM_UPGRADE . ': ' . VERSION . ')' : '') . '</h1>
 		<div align="right">
 			<b>' . LANGUAGE . '</b>
 			' . $options . '

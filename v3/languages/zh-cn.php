@@ -48,6 +48,10 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('INSTALLTION_COMPLETED', '安装完成！');
 	define('YOU_CAN_NOW_LOGIN', '您现在将可以以用户 <b>%emailAddress%</b> 以及密码 <b>%password%</b> 登录系统。');
 	define('FINISH', '完成');
+	define('SAVE', '保存');
+	define('SYSTEM_UPGRADE', '系统升级');
+	define('UPGRADE_COMPLETED', '升级完毕');
+	define('SOLUSVM_CONTROLLER_HAS_BEEN_UPGRADED', 'SolusVM Controller 已经成功升级至 <b>%version%</b> 版本。');
 
 
 /* header.php */
@@ -88,7 +92,6 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('ADD_USER', '新增用户');
 	define('EDIT_USER', '编辑用户');
 	define('NEW_USER', '新用户');
-	define('SAVE_USER', '保存用户');
 	define('ACCESS_DENIED', '访问被拒绝。');
 	define('ACCESS_USER_ACCOUNT', '接管用户帐户');
 	define('NOT_ABLE_TO_EDIT_SELECTED_USER', '无法编辑用户。');
@@ -126,6 +129,7 @@ define('ALL_VMS_UNDER_ONE_ROOF', 'All VMs under one roof');
 	define('BOOT', '启动');
 	define('REBOOT', '重启');
 	define('SHUTDOWN', '关机');
+	define('SORT_BY', '排序方式');
 
 /* view-vm.php */
 	define('EDIT_VM', '编辑主机');

@@ -48,7 +48,7 @@ $scripts = '
 		var tags = [\'' . implode('\',\'', $tags) . '\'];
 		$("#tags").tagField({ caseSensitive:false, tags:tags });
 
-		$("#keyword").val("' . SEARCH . '").attr({data: "' . SEARCH . '"}).addClass("fade")
+		$("#keyword").val(\'' . ((isset($_GET['search'])) ? $_GET['search'] : SEARCH) . '\').attr({data: "' . SEARCH . '"}).addClass("fade")
 		.focus(function(){
 			if($(this).val() == $(this).attr("data")) $(this).val("").removeClass("fade");
 		})
@@ -60,18 +60,24 @@ $scripts = '
 		})
 		.keypress(function(e){
 			if(e.keyCode == 13){
-				listVM($(this).val());
+				window.location.href="?q=vm&search=" + escape($(this).val());
 			}
 		});
 
-		listVM("");
+		$("#sort").change(function(){
+			listVM(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val(), $(this).val());
+		});
+
+		listVM(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val());
 	});
 
-	function listVM(keyword){
+	function listVM(keyword, sort){
+		sort = sort || "label";
+
 		$("#vm-list").html("");
 		$(".progress").show();
 
-		$.post("?q=list-vm.json", {keyword: keyword}, function(data){
+		$.post("?q=list-vm.json", {keyword: keyword, sort: sort }, function(data){
 			$(".progress").hide();
 
 			if(!data.length){
@@ -80,7 +86,7 @@ $scripts = '
 			}
 
 			$.each(data, function(i, item){
-				var li = $("<li />").html(\'<span></span><ul><li style="width:18px;"><img src="images/icons/\' + item.status + \'.png" class="icon" /></li><li style="width:18px;display:none;"><div class="loading" style="margin:10px 0 0 0;"></div><li><li style="width:340px;" onclick="window.location.href=\\\'?q=view-vm&id=\' + item.id + \'\\\';">\' + item.label + \'</li><li><button class="boot">Boot</button> <button class="reboot">Reboot</button> <button class="shutdown">Shutdown</button></li><li style="display:none;"><div class="loading" style="margin:10px 0 0 100px;"></div><li></ul><div style="clear:both;"></div>\').attr("data-field", item.id);
+				var li = $("<li />").html(\'<span></span><ul><li style="width:18px;"><img src="images/icons/\' + item.status + \'.png" class="icon" /></li><li style="width:18px;display:none;"><div class="loading" style="margin:10px 0 0 0;"></div><li><li style="width:295px;" onclick="window.location.href=\\\'?q=view-vm&id=\' + item.id + \'&ref=' . rawurlencode(getPageURL()) . '\\\';">\' + item.label + \'</li><li style="width:40px;"><span class="\' + item.vz + \'">\' + item.vz + \'</span></li><li><button class="boot">' . BOOT . '</button> <button class="reboot">' . REBOOT . '</button> <button class="shutdown">' . SHUTDOWN . '</button></li><li style="display:none;"><div class="loading" style="margin:10px 0 0 100px;"></div><li></ul><div style="clear:both;"></div>\').attr("data-field", item.id);
 
 				$("#vm-list").append(li);
 
@@ -184,9 +190,23 @@ include(INCLUDES . 'header.php');
 ?>
 	<div id="main">
 		<h1><?php echo VM_LIST; ?></h1>
-		<div align="right">
-			<input type="text" name="keyword" id="keyword" value="" />
-		</div>
+
+		<p>
+			<div class="left">
+				<label for="sort" style="display:inline-block;width:60px;"><?php echo SORT_BY; ?></label>
+				<select id="sort">
+					<option value="label"> <?php echo LABEL; ?></option>
+					<option value="vz"> <?php echo VIRTUALIZATION; ?></option>
+				</select>
+			</div>
+
+			<div class="right">
+				<input type="text" name="keyword" id="keyword" value="" />
+			</div>
+		</p>
+
+		<div class="clear"></div>
+
 		<p>
 			<div id="result"><?php if(isset($_SESSION['result'])){ echo $_SESSION['result']; unset($_SESSION['result']); } ?></div>
 			<div class="progress"></div>
@@ -204,15 +224,13 @@ include(INCLUDES . 'header.php');
 				<input type="text" name="label" id="label" value="" maxlength="100" class="text" style="width:355px;" /> <span class="red">*</span>
 
 				<label for="vzTypeId"><?php echo VIRTUALIZATION; ?></label>
-				<select name="vzTypeId" id="vzTypeId" class="vz">
+				<select name="vzId" id="vzId" class="vz">
 					<option value="0"> </option>
 					<?php
-					$vzTypes = $db->select('vz_type');
+					$vzTypes = getVz();
 
-					if($db->affectedRows() > 0){
-						foreach($vzTypes as $vzType){
-							echo '<option value="' . $vzType['vz_type_id'] . '" class="' . $vzType['vz_code'] . '"> ' . $vzType['vz_name'] . '</option>';
-						}
+					foreach($vzTypes as $vzType){
+						echo '<option value="' . $vzType['id'] . '" class="' . $vzType['code'] . '"' . (($vm['vz_id'] == $vzType['id']) ? ' selected' : '') . '> ' . $vzType['name'] . '</option>';
 					}
 					?>
 				</select> <span class="red">*</span>

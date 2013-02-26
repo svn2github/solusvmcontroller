@@ -26,10 +26,29 @@ if(!isset($_SESSION['admin_id'])) die(json_encode(array('status'=>'error', 'mess
 if(!isset($_SESSION['admin_id']) || $_SESSION['admin_id'] != $_SESSION['user_id']) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . ACCESS_DENIED . '</p>')));
 
 $keyword = strtolower($form->post('keyword'));
+$sort = $form->post('sort');
 
 $db->connect();
 
-$rows = $db->execute('SELECT *,(SELECT COUNT(*) FROM vm WHERE user_id=u.user_id) AS total_vm FROM user u WHERE ' . ((preg_match('/^\d+$/', $keyword)) ? 'user_id=\'' . $db->escape($keyword) . '\'' : 'LOWER(name) LIKE \'%' . $db->escape($keyword) . '%\' OR email_address LIKE \'%' . $keyword . '%\''));
+switch($sort){
+	case 'email':
+		$order = 'u.email_address';
+	break;
+
+	case 'language':
+		$order = 'u.language';
+	break;
+
+	case 'vm':
+		$order = 'total_vm DESC';
+	break;
+
+	default:
+		$order = 'u.name';
+	break;
+}
+
+$rows = $db->execute('SELECT *,(SELECT COUNT(*) FROM vm WHERE user_id=u.user_id) AS total_vm FROM user u WHERE ' . ((preg_match('/^\d+$/', $keyword)) ? 'user_id=\'' . $db->escape($keyword) . '\'' : 'LOWER(name) LIKE \'%' . $db->escape($keyword) . '%\' OR email_address LIKE \'%' . $keyword . '%\'') . ' ORDER BY ' . $order);
 
 if($db->affectedRows() == 0) die(json_encode(array()));
 

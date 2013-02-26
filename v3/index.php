@@ -65,6 +65,24 @@ if(!defined('INSTALLED')){
 	die;
 }
 
+// Check for upgrade
+if(file_exists(ROOT . 'setup.php')){
+	if(defined('SVMC_VERSION')){
+		// Get setup version
+		$setup = file_get_contents(ROOT . 'setup.php');
+
+		if(preg_match('/VERSION\', \'([^\']+)/', $setup, $matches)){
+			if($matches[1] > SVMC_VERSION){
+				define('UPGRADE', 1);
+
+				require_once(ROOT . 'setup.php');
+				die;
+			}
+		}
+	}
+	die('Please remove setup.php for sucurity reason.');
+}
+
 $db = new MySQL($config['dbHost'], $config['dbUser'], $config['dbPass'], $config['dbName']);
 
 // Include language file

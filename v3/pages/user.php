@@ -53,14 +53,20 @@ $scripts = '
 			}
 		});
 
-		listUser("");
+		$("#sort").change(function(){
+			listUser(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val(), $(this).val());
+		});
+
+		listUser(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val());
 	});
 
-	function listUser(keyword){
+	function listUser(keyword, sort){
+		sort = sort || "name";
+
 		$("#user-list").html("");
 		$(".progress").show();
 
-		$.post("?q=list-user.json", {keyword: keyword}, function(data){
+		$.post("?q=list-user.json", {keyword: keyword, sort: sort}, function(data){
 			$(".progress").hide();
 
 			if(!data.length){
@@ -189,9 +195,25 @@ include(INCLUDES . 'header.php');
 ?>
 	<div id="main">
 		<h1><?php echo USER_LIST; ?></h1>
-		<div align="right">
-			<input type="text" name="keyword" id="keyword" value="" />
-		</div>
+
+		<p>
+			<div class="left">
+				<label for="sort" style="display:inline-block;width:60px;"><?php echo SORT_BY; ?></label>
+				<select id="sort">
+					<option value="name"> <?php echo NAME; ?></option>
+					<option value="email"> <?php echo EMAIL_ADDRESS; ?></option>
+					<option value="language"> <?php echo LANGUAGE; ?></option>
+					<option value="vm"> <?php echo VM_ASSIGNED; ?></option>
+				</select>
+			</div>
+
+			<div class="right">
+				<input type="text" name="keyword" id="keyword" value="" />
+			</div>
+		</p>
+
+		<div class="clear"></div>
+
 		<p>
 			<div id="result"><?php if(isset($_SESSION['result'])){ echo $_SESSION['result']; unset($_SESSION['result']); } ?></div>
 			<div class="progress"></div>
@@ -246,7 +268,7 @@ include(INCLUDES . 'header.php');
 			</form>
 
 			<p align="center">
-				<input class="button" type="button" value="<?php echo SAVE_USER; ?>" onclick="saveUser();" />
+				<input class="button" type="button" value="<?php echo SAVE; ?>" onclick="saveUser();" />
 			</p>
 		</div>
 	</div>

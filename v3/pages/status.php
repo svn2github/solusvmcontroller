@@ -81,6 +81,6 @@ foreach($rows as $row){
 	$status['vm-' . $vmId] = ($result['vmstat'] == 'online') ? 'online' : 'offline';
 	$_SESSION['status'] = json_encode($status);
 
-	die(json_encode(array('status'=>(($result['vmstat'] == 'online') ? 'online' : 'offline'), 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ips'=>$ipList, 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>displayBytes($bwPercent))));
+	die(json_encode(array('status'=>(($result['vmstat'] == 'online') ? 'online' : 'offline'), 'hostname'=>$result['hostname'], 'main_ip'=>$result['ipaddress'], 'ips'=>$ipList, 'hdd_total'=>displayBytes($hddTotal), 'hdd_used'=>displayBytes($hddUsed), 'hdd_free'=>displayBytes($hddFree), 'hdd_percent'=>$hddPercent, 'mem_total'=>displayBytes($memTotal), 'mem_used'=>displayBytes($memUsed), 'meme_free'=>displayBytes($memFree), 'mem_percent'=>$memPercent, 'bw_total'=>displayBytes($bwTotal), 'bw_used'=>displayBytes($bwUsed), 'bw_free'=>displayBytes($bwFree), 'bw_percent'=>$bwPercent)));
 }
 ?>
