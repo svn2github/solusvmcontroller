@@ -191,6 +191,8 @@ switch($step){
 		// Initial database connection
 				$db = new MySQL($data->dbHost, $data->dbUser, $data->dbPass, $data->dbName);
 
+				$db->enableLog('dd.txt');
+
 				$db->connect();
 
 				// Create required tables
