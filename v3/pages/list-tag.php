@@ -25,10 +25,13 @@ if(!isset($_SESSION['user_id'])) die('Access is denied.');
 if(!isset($_SESSION['user_id'])) die(json_encode(array('status'=>'error', 'message'=>'<p class="red">' . SESSION_EXPIRED . '</p>')));
 
 $keyword = $form->post('keyword');
+$sort = $form->post('sort');
 
 $db->connect();
 
-$rows = $db->execute('SELECT *,(SELECT COUNT(*) FROM tag_linker WHERE tag_id=t.tag_id) AS total FROM tag t WHERE user_id=\'' . $db->escape($_SESSION['user_id']) . '\' AND LOWER(t.tag_name) LIKE \'%' . $db->escape(strtolower($keyword)) . '%\' ORDER BY LOWER(t.tag_name)');
+$order = ($sort == 'name') ? 'LOWER(t.tag_name)' : 'total DESC';
+
+$rows = $db->execute('SELECT *,(SELECT COUNT(*) FROM tag_linker WHERE tag_id=t.tag_id) AS total FROM tag t WHERE user_id=\'' . $db->escape($_SESSION['user_id']) . '\' AND LOWER(t.tag_name) LIKE \'%' . $db->escape(strtolower($keyword)) . '%\' ORDER BY ' . $order);
 
 if($db->affectedRows() == 0) die(json_encode(array()));
 

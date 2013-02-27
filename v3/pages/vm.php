@@ -43,6 +43,8 @@ if($db->affectedRows() > 0){
 	}
 }
 
+$sort = (isset($_GET['sort'])) ? $_GET['sort'] : 'label';
+
 $scripts = '
 	$(function(){
 		var tags = [\'' . implode('\',\'', $tags) . '\'];
@@ -65,10 +67,10 @@ $scripts = '
 		});
 
 		$("#sort").change(function(){
-			listVM(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val(), $(this).val());
+			window.location.href = "?q=vm&search=" + (($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val()) + "&sort=" + $(this).val();
 		});
 
-		listVM(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val());
+		listVM(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val(), $("#sort").val());
 	});
 
 	function listVM(keyword, sort){
@@ -195,8 +197,8 @@ include(INCLUDES . 'header.php');
 			<div class="left">
 				<label for="sort" style="display:inline-block;width:60px;"><?php echo SORT_BY; ?></label>
 				<select id="sort">
-					<option value="label"> <?php echo LABEL; ?></option>
-					<option value="vz"> <?php echo VIRTUALIZATION; ?></option>
+					<option value="label"<?php if($sort=='label') echo ' selected'; ?>> <?php echo LABEL; ?></option>
+					<option value="vz"<?php if($sort=='vz') echo ' selected'; ?>> <?php echo VIRTUALIZATION; ?></option>
 				</select>
 			</div>
 

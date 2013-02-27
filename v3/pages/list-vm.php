@@ -29,7 +29,7 @@ $sort = $form->post('sort');
 
 $db->connect();
 
-$order = ($sort == 'vz') ? 'v.vz_id' : 'LOWER(v.label)';
+$order = ($sort == 'vz') ? 'v.vz_id,LOWER(v.label)' : 'LOWER(v.label)';
 
 if(substr($keyword,0, 4) == 'tag:'){
 	$rows = $db->execute('SELECT v.vm_id,v.label,v.vz_id FROM vm v LEFT JOIN tag_linker tl ON v.vm_id=tl.vm_id LEFT JOIN tag t ON t.tag_id=tl.tag_id WHERE v.user_id=\'' . $db->escape($_SESSION['user_id']) . '\' AND LOWER(t.tag_name)=\'' . $db->escape(substr($keyword, 4)) . '\' GROUP BY v.vm_id ORDER BY ' . $order);

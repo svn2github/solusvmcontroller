@@ -49,14 +49,20 @@ $scripts = '
 			}
 		});
 
-		listTag("");
+		$("#sort").change(function(){
+			listTag(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val(), $(this).val());
+		});
+
+		listTag(($("#keyword").val() == $("#keyword").attr("data")) ? "" : $("#keyword").val());
 	});
 
-	function listTag(keyword){
+	function listTag(keyword, sort){
+		sort = sort || "name";
+
 		$("#tag-list").html("");
 		$(".progress").show();
 
-		$.post("?q=list-tag", { keyword: keyword }, function(data){
+		$.post("?q=list-tag", { keyword: keyword, sort: sort }, function(data){
 			$(".progress").hide();
 
 			if(!data.length){
@@ -163,9 +169,23 @@ include(INCLUDES . 'header.php');
 ?>
 	<div id="main">
 		<h1><?php echo TAG_LIST; ?></h1>
-		<div align="right">
-			<input type="text" name="keyword" id="keyword" value="" />
-		</div>
+
+		<p>
+			<div class="left">
+				<label for="sort" style="display:inline-block;width:60px;"><?php echo SORT_BY; ?></label>
+				<select id="sort">
+					<option value="name"> <?php echo TAG_NAME; ?></option>
+					<option value="vm"> <?php echo VM_ASSIGNED; ?></option>
+				</select>
+			</div>
+
+			<div class="right">
+				<input type="text" name="keyword" id="keyword" value="" />
+			</div>
+		</p>
+
+		<div class="clear"></div>
+
 		<p>
 			<div id="result"><?php if(isset($_SESSION['result'])){ echo $_SESSION['result']; unset($_SESSION['result']); } ?></div>
 			<div class="progress"></div>
