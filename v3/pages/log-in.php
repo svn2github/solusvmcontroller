@@ -36,9 +36,9 @@ if($form->isPost() && isValidEmail($emailAddress) && !empty($password)){
 	// Get user information by email address
 	$rows = $db->select('user', '*', 'email_address=\'' . $db->escape($emailAddress) . '\'');
 
-	foreach($rows[0] as $key=>$value) $user[$key] = $value;
-
 	if($db->affectedRows() == 1){
+		foreach($rows[0] as $key=>$value) $user[$key] = $value;
+
 		// Validate password by MD5 hash
 		if(hashed($password) == $user['password']){
 			// Enable log in session if user is active
