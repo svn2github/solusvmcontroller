@@ -78,21 +78,13 @@ if(isset($_POST)){
 $q = isset($_GET['q']) ? $_GET['q'] : 'vps';
 
 // Start session
-if(session_id() == ''){
-	// Generate an unique session Id
-	$id = 0;
-	while(strlen($id) < 32) $id .= mt_rand(0, mt_getrandmax());
-	$id = md5(uniqid($id, true));
-
-	// Start the session
-	session_start();
-}
+if(session_id() == '') session_start();
 
 // Check installation status
 if(!defined('INSTALLED')){
 	file_exists(ROOT . 'setup.php') or die('Cannot find "setup.php". Installation aborted.');
 	include(ROOT . 'setup.php');
-	exit;
+	die;
 }
 
 // Include language file
@@ -107,13 +99,20 @@ if(isset($_SESSION['user_id'])){
 
 if(file_exists(LANGUAGES . $languageCode . '.php')) include(LANGUAGES . $languageCode . '.php');
 
+// Validate pages to prevent file inclusion vulnerability
+$pges = array();
+
+if($handle = opendir(PAGES)){
+	while(($entry = readdir($handle)) !== false){
+		if(substr($entry, strrpos($entry, '.') + 1) != 'php') continue;
+		$pages[] = $entry;
+    }
+    closedir($handle);
+}
+
 // Display requested page
 $showSidebar = 0;
 $showMenu = 1;
-if(file_exists(PAGES . $q . '.php')){
-	include(PAGES . $q . '.php');
-}
-else{
-	include(PAGES . '404.php');
-}
+
+require_once(PAGES . ((in_array($q . '.php', $pages)) ? ($q . '.php') : '404.php'));
 ?>
