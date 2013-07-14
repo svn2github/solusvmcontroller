@@ -97,6 +97,17 @@ $q = ($q == 'index') ? 'log-in' : $q;
 
 $showMenu = 1;
 
+// Validate pages to prevent file inclusion vulnerability
+$pges = array();
+
+if($handle = opendir(PAGES)){
+	while(($entry = readdir($handle)) !== false){
+		if(substr($entry, strrpos($entry, '.') + 1) != 'php') continue;
+		$pages[] = $entry;
+    }
+    closedir($handle);
+}
+
 // Display requested page
-require_once(PAGES . ((file_exists(PAGES . $q . '.php')) ? $q : '404') . '.php');
+require_once(PAGES . ((in_array($q . '.php', $pages)) ? ($q . '.php') : '404.php'));
 ?>
