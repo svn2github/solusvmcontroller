@@ -98,7 +98,7 @@ $q = ($q == 'index') ? 'log-in' : $q;
 $showMenu = 1;
 
 // Validate pages to prevent file inclusion vulnerability
-$pges = array();
+$pages = array();
 
 if($handle = opendir(PAGES)){
 	while(($entry = readdir($handle)) !== false){
