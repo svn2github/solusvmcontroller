@@ -80,7 +80,7 @@ switch($step){
 
 	case '2':
 		// Make sure not skipping the setup steps
-		if($_SESSION['setup_step'] != 1) die(header('Location: ?step=1'));
+		if(!isset($_SESSION['setup_step']) || $_SESSION['setup_step'] != 1) die(header('Location: ?step=1'));
 
 		$status = '';
 		$dbHost = $form->post('dbHost', ((isset($config['dbHost'])) ? $config['dbHost'] : ''), 'strtolower');
@@ -136,7 +136,7 @@ switch($step){
 
 	case '3':
 		// Make sure not skipping the setup steps
-		if($_SESSION['setup_step'] != 2) die(header('Location: ?step=1'));
+		if(!isset($_SESSION['setup_step']) || $_SESSION['setup_step'] != 2) die(header('Location: ?step=1'));
 
 		$status = '';
 		$name = $form->post('name');
